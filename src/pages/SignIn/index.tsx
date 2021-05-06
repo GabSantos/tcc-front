@@ -1,18 +1,43 @@
 import React from 'react';
 
-import { Container, Logo, LogoText, LogoContainer, BgCircle } from './styles';
+import Input from '../../components/Input';
+import Button from '../../components/Button';
 
-import Circulo1 from '../../assets/circulo1.png';
-import Circulo2 from '../../assets/circulo2.png';
+import Login from '../../assets/Login.png';
+
+import {
+  Container,
+  ImageBg,
+  LogoText,
+  Form,
+  Text,
+  CadButton,
+  TextContainer,
+} from './styles';
 
 const SignIn: React.FC = () => {
   return (
     <Container>
-      <LogoContainer>
-        <Logo source={Circulo1} />
+      <ImageBg source={Login}>
         <LogoText>Ficha Facial Digital</LogoText>
-      </LogoContainer>
-      <BgCircle source={Circulo2} />
+        <Form>
+          <Input name="email" icon="mail" placeholder="E-mail" />
+          <Input name="password" icon="lock" placeholder="Senha" />
+          <Button
+            onPress={() => {
+              console.log('deu');
+            }}
+          >
+            Entrar
+          </Button>
+        </Form>
+        <TextContainer>
+          <Text style={{ color: '#2E2E33' }}>Não possui uma conta?</Text>
+          <CadButton>
+            <Text style={{ color: '#3741FF' }}>Cadastre-se aqui</Text>
+          </CadButton>
+        </TextContainer>
+      </ImageBg>
     </Container>
   );
 };
