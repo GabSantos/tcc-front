@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 
+import Feather from 'react-native-vector-icons/Feather';
+
 export const Container = styled.View`
   width: 100%;
   height: 60px;
@@ -9,11 +11,12 @@ export const Container = styled.View`
   box-shadow: 0px 4px 8px rgba(26, 26, 29, 0.08);
   border-radius: 8px;
   margin: 12px 0;
-  justify-content: center;
+  flex-direction: row;
+  align-items: center;
 `;
 
 export const TextInput = styled.TextInput`
-  flex: 1;
+  flex-grow: 1;
   color: #2e2e33;
   font-size: 18px;
   font-family: 'MontserratRegular';
@@ -21,4 +24,8 @@ export const TextInput = styled.TextInput`
     font-size: 18px;
     font-family: 'MontserratRegular';
   }
+`;
+
+export const Icon = styled(Feather)`
+  margin-right: 16px;
 `;

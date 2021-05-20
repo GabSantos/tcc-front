@@ -1,15 +1,6 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-`;
-
-export const ImageBg = styled.ImageBackground`
+export const Container = styled.ImageBackground`
   width: 100%;
   height: 100%;
   align-items: center;
@@ -35,7 +26,7 @@ export const LogoText = styled.Text`
 `;
 
 export const Text = styled.Text`
-  font-size: 16px;
+  font-size: 14px;
   margin: 2px;
   font-family: 'MontserratMedium';
   letter-spacing: -0.5px;
