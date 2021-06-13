@@ -20,7 +20,7 @@ export const LogoText = styled.Text`
   color: #f4f4f4;
   text-align: center;
   width: 100%;
-  margin: 20px 0;
+  margin: 48px 0;
 
   text-shadow: 2px 4px 8px rgba(26, 26, 29, 0.22);
 `;
@@ -36,7 +36,7 @@ export const CadButton = styled.TouchableOpacity``;
 
 export const TextContainer = styled.View`
   flex: 1;
-  bottom: 0px;
+  margin-top: 86px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
