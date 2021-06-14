@@ -15,7 +15,7 @@ import {
   TextContainer,
 } from './styles';
 
-const SignUp: React.FC = () => {
+const SignUp: React.FC = props => {
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
@@ -31,7 +31,7 @@ const SignUp: React.FC = () => {
           <Input name="password" icon="lock" placeholder="Confirmar senha" />
           <Button
             onPress={() => {
-              console.log('deu');
+              props.navigation.navigate('SignIn');
             }}
           >
             Entrar
@@ -39,7 +39,11 @@ const SignUp: React.FC = () => {
         </Form>
         <TextContainer>
           <Text style={{ color: '#2E2E33' }}>Já possui uma conta?</Text>
-          <CadButton>
+          <CadButton
+            onPress={() => {
+              props.navigation.navigate('SignIn');
+            }}
+          >
             <Text style={{ color: '#3741FF' }}>Entre aqui</Text>
           </CadButton>
         </TextContainer>

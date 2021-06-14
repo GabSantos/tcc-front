@@ -15,7 +15,7 @@ import {
   TextContainer,
 } from './styles';
 
-const SignIn: React.FC = () => {
+const SignIn: React.FC = props => {
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
@@ -28,7 +28,7 @@ const SignIn: React.FC = () => {
           <Input name="password" icon="lock" placeholder="Senha" />
           <Button
             onPress={() => {
-              console.log('deu');
+              props.navigation.navigate('ListFichas');
             }}
           >
             Entrar
@@ -36,14 +36,18 @@ const SignIn: React.FC = () => {
         </Form>
         <CadButton
           onPress={() => {
-            console.log('deu');
+            props.navigation.navigate('EsqueciSenha');
           }}
         >
           <Text style={{ color: '#3741FF' }}>Esqueci minha senha</Text>
         </CadButton>
         <TextContainer>
           <Text style={{ color: '#2E2E33' }}>Não possui uma conta?</Text>
-          <CadButton>
+          <CadButton
+            onPress={() => {
+              props.navigation.navigate('SignUp');
+            }}
+          >
             <Text style={{ color: '#3741FF' }}>Cadastre-se aqui</Text>
           </CadButton>
         </TextContainer>

@@ -13,14 +13,16 @@ import {
   Area,
   AreaText,
   Container,
+  Exit,
   Form,
+  Icon,
   RadioLabel,
   RadioTitle,
   RadioView,
   Title,
 } from './styles';
 
-const CadCliente: React.FC = () => {
+const CadFicha: React.FC = props => {
   const [ultimaConsulta, setUltimaConsulta] = useState(new Date());
   const [cicloMenstrualNormal, setCicloMenstrualNormal] = useState('S');
   const [primeiraMenstruacao, setPrimeiraMenstruacao] = useState(new Date());
@@ -136,11 +138,13 @@ const CadCliente: React.FC = () => {
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <Container>
-        <View>
-          <TouchableOpacity>
-            <Text style={{ color: '#3741FF' }}>X</Text>
-          </TouchableOpacity>
-        </View>
+        <Exit
+          onPress={() => {
+            props.navigation.goBack();
+          }}
+        >
+          <Icon name="arrow-left" size={24} />
+        </Exit>
         <Title>Dados gerais de saúde e hábitos de vida</Title>
         <Form>
           <InputFicha name="queixa" label="Queixa principal" />
@@ -1171,7 +1175,7 @@ const CadCliente: React.FC = () => {
           {/* AQUIIIIIIIIIIIIIIIIIIIIII */}
           <Button
             onPress={() => {
-              console.log('deu');
+              props.navigation.navigate('Consulta');
             }}
           >
             Cadastrar
@@ -1182,4 +1186,4 @@ const CadCliente: React.FC = () => {
   );
 };
 
-export default CadCliente;
+export default CadFicha;

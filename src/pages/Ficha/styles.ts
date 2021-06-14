@@ -1,6 +1,8 @@
+import { TouchableOpacity } from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 
-export const Container = styled.ImageBackground`
+export const Container = styled.View`
   width: 100%;
   height: 100%;
   align-items: center;
@@ -14,30 +16,50 @@ export const Form = styled.View`
   width: 300px;
 `;
 
-export const LogoText = styled.Text`
-  font-size: 52px;
-  font-family: 'Pacifico';
-  color: #f4f4f4;
-  text-align: center;
-  width: 100%;
-  margin: 48px 0;
-
-  text-shadow: 2px 4px 8px rgba(26, 26, 29, 0.22);
-`;
-
-export const Text = styled.Text`
-  font-size: 14px;
-  margin: 2px;
+export const Title = styled.Text`
   font-family: 'MontserratMedium';
-  letter-spacing: -0.5px;
+  font-size: 30px;
+  width: 300px;
+  margin: 30px 0;
 `;
 
-export const CadButton = styled.TouchableOpacity``;
-
-export const TextContainer = styled.View`
-  flex: 1;
-  margin-top: 86px;
-  flex-direction: row;
+export const Area = styled.View`
+  width: 100%;
+  height: 45px;
+  border: solid 2px #3741ff;
+  border-right-width: 0;
+  border-left-width: 0;
   align-items: center;
   justify-content: center;
+  margin-top: 12px;
+`;
+
+export const AreaText = styled.Text`
+  text-align: center;
+  width: 100%;
+  font-family: 'MontserratMedium';
+`;
+
+export const RadioView = styled.View`
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const RadioLabel = styled.Text`
+  font-family: 'MontserratMedium';
+`;
+
+export const RadioTitle = styled.Text`
+  font-size: 20px;
+  font-family: 'MontserratMedium';
+  width: 100%;
+`;
+
+export const Icon = styled(Feather)``;
+
+export const Exit = styled(TouchableOpacity)`
+  margin-top: 24px;
+  margin-right: 80%;
 `;

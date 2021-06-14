@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
+import { RectButton, TouchableOpacity } from 'react-native-gesture-handler';
+import Feather from 'react-native-vector-icons/Feather';
 
 export const Container = styled.View`
   width: 100%;
@@ -31,4 +32,12 @@ export const Title = styled.Text`
   font-family: 'MontserratMedium';
   font-size: 30px;
   margin: 30px 0;
+`;
+
+export const Icon = styled(Feather)``;
+
+export const Exit = styled(TouchableOpacity)`
+  top: 24px;
+  position: absolute;
+  left: 24px;
 `;

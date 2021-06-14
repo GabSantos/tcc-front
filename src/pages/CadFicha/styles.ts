@@ -1,9 +1,10 @@
+import { TouchableOpacity } from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
   width: 100%;
   height: 100%;
-
   align-items: center;
   padding: 0;
   margin: 0;
@@ -18,6 +19,7 @@ export const Form = styled.View`
 export const Title = styled.Text`
   font-family: 'MontserratMedium';
   font-size: 30px;
+  width: 300px;
   margin: 30px 0;
 `;
 
@@ -53,4 +55,11 @@ export const RadioTitle = styled.Text`
   font-size: 20px;
   font-family: 'MontserratMedium';
   width: 100%;
+`;
+
+export const Icon = styled(Feather)``;
+
+export const Exit = styled(TouchableOpacity)`
+  margin-top: 24px;
+  margin-right: 80%;
 `;

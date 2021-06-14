@@ -1,30 +1,49 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
-import { ScrollView, Text, View } from 'react-native';
+import { View, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import SignatureScreen from 'react-native-signature-canvas';
+// import Signature from 'react-native-canvas-signature';
+import Signature, { SignatureViewRef } from 'react-native-signature-canvas';
+
+import Button from '../../components/Button';
+
 import { Container, Footer } from './styles';
 
-const Consulta: React.FC = () => {
-  const handleSignature = (signature: any) => {
-    console.log(signature);
-  };
+import image from '../../assets/frontal.png';
 
-  const handleEmpty = () => {
-    console.log('Empty');
-  };
+const Consulta: React.FC = props => {
+  const ref = useRef<SignatureViewRef>(null);
+  const [signature, setSign] = useState(null);
 
-  const handleClear = () => {
-    console.log('clear success!');
-  };
-
+  const style = `
+  .m-signature-pad {
+    height: 600px;
+    margin-left: 0px;
+    margin-top: 0px;
+   }
+   .m-signature-pad--body
+    canvas {
+      background: url(${image});
+    }
+  `;
   return (
     <Container>
-      <SignatureScreen
-        onOK={handleSignature}
-        onEmpty={handleEmpty}
-        onClear={handleClear}
+      <Signature
+        webStyle={style}
+        ref={ref}
+        onOK={(sig: any) => {
+          setSign(sig);
+          props.navigation.navigate('ListFichas');
+          console.log('clear');
+        }}
+        onClear={() => console.log('clear')}
+        imageType="image/jpeg"
       />
+      {/* <Image
+        resizeMode="contain"
+        style={{ position: 'absolute' }}
+        source={image}
+      /> */}
     </Container>
   );
 };

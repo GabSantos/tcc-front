@@ -7,20 +7,22 @@ import InputFicha from '../../components/InputFicha';
 import Button from '../../components/Button';
 import DatePicker from '../../components/DatePicker';
 
-import { Container, Form, Title } from './styles';
+import { Container, Form, Icon, Title, Exit } from './styles';
 
-const EditCliente: React.FC = () => {
+const EditCliente: React.FC = props => {
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <Container>
-        <View>
-          <TouchableOpacity>
-            <Text style={{ color: '#3741FF' }}>X</Text>
-          </TouchableOpacity>
-        </View>
+        <Exit
+          onPress={() => {
+            props.navigation.goBack();
+          }}
+        >
+          <Icon name="arrow-left" size={24} />
+        </Exit>
         <Title>Editar dados</Title>
         <Form>
           <InputFicha name="nome" label="Nome" />
@@ -29,7 +31,7 @@ const EditCliente: React.FC = () => {
 
           <Button
             onPress={() => {
-              console.log('deu');
+              props.navigation.navigate('ListFichas');
             }}
           >
             Salvar

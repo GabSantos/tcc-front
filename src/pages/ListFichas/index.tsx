@@ -1,11 +1,23 @@
 import React from 'react';
 
-import { ScrollView, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, Text } from 'react-native';
 
-import { Container, Footer } from './styles';
+import {
+  Card,
+  CardImage,
+  CardTextContainer,
+  Container,
+  Data,
+  Footer,
+  FotButton,
+  FotText,
+  Nome,
+  Queixa,
+} from './styles';
 
-const SignIn: React.FC = () => {
+import rosto from '../../assets/frontal.png';
+
+const ListFichas: React.FC = props => {
   return (
     <Container>
       <ScrollView
@@ -14,63 +26,124 @@ const SignIn: React.FC = () => {
       >
         <Container>
           {/* uma ficha */}
-          <TouchableOpacity>
-            <View style={{ margin: 15, width: '100%', flexDirection: 'row' }}>
-              <View>
-                <Text>Nome da pessoa</Text>
-                <Text>Queixas principais</Text>
-                <Text>Data ultima edição</Text>
-              </View>
-              <View>
-                <Text>Imagem rosto</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+          <Card
+            onPress={() => {
+              props.navigation.navigate('Ficha');
+            }}
+          >
+            <CardTextContainer>
+              <Nome>Gabriel Araujo Gomes dos Santos</Nome>
+              <Queixa>Queixas principais</Queixa>
+              <Data>Data ultima edição</Data>
+            </CardTextContainer>
+            <CardImage style={{ resizeMode: 'contain' }} source={rosto} />
+          </Card>
+
           {/* uma ficha */}
-          <TouchableOpacity>
-            <View style={{ margin: 15, width: '100%', flexDirection: 'row' }}>
-              <View>
-                <Text>Nome da pessoa</Text>
-                <Text>Queixas principais</Text>
-                <Text>Data ultima edição</Text>
-              </View>
-              <View>
-                <Text>Imagem rosto</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+          <Card
+            onPress={() => {
+              props.navigation.navigate('Ficha');
+            }}
+          >
+            <CardTextContainer>
+              <Nome>Gabriel Araujo Gomes dos Santos</Nome>
+              <Queixa>Queixas principais</Queixa>
+              <Data>Data ultima edição</Data>
+            </CardTextContainer>
+            <CardImage style={{ resizeMode: 'contain' }} source={rosto} />
+          </Card>
+
           {/* uma ficha */}
-          <TouchableOpacity>
-            <View style={{ margin: 15, width: '100%', flexDirection: 'row' }}>
-              <View>
-                <Text>Nome da pessoa</Text>
-                <Text>Queixas principais</Text>
-                <Text>Data ultima edição</Text>
-              </View>
-              <View>
-                <Text>Imagem rosto</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+          <Card
+            onPress={() => {
+              props.navigation.navigate('Ficha');
+            }}
+          >
+            <CardTextContainer>
+              <Nome>Gabriel Araujo Gomes dos Santos</Nome>
+              <Queixa>Queixas principais</Queixa>
+              <Data>Data ultima edição</Data>
+            </CardTextContainer>
+            <CardImage style={{ resizeMode: 'contain' }} source={rosto} />
+          </Card>
+
+          {/* uma ficha */}
+          <Card
+            onPress={() => {
+              props.navigation.navigate('Ficha');
+            }}
+          >
+            <CardTextContainer>
+              <Nome>Gabriel Araujo Gomes dos Santos</Nome>
+              <Queixa>Queixas principais</Queixa>
+              <Data>Data ultima edição</Data>
+            </CardTextContainer>
+            <CardImage style={{ resizeMode: 'contain' }} source={rosto} />
+          </Card>
+
+          {/* uma ficha */}
+          <Card
+            onPress={() => {
+              props.navigation.navigate('Ficha');
+            }}
+          >
+            <CardTextContainer>
+              <Nome>Gabriel Araujo Gomes dos Santos</Nome>
+              <Queixa>Queixas principais</Queixa>
+              <Data>Data ultima edição</Data>
+            </CardTextContainer>
+            <CardImage style={{ resizeMode: 'contain' }} source={rosto} />
+          </Card>
+
+          {/* uma ficha */}
+          <Card
+            onPress={() => {
+              props.navigation.navigate('Ficha');
+            }}
+          >
+            <CardTextContainer>
+              <Nome>Gabriel Araujo Gomes dos Santos</Nome>
+              <Queixa>Queixas principais</Queixa>
+              <Data>Data ultima edição</Data>
+            </CardTextContainer>
+            <CardImage style={{ resizeMode: 'contain' }} source={rosto} />
+          </Card>
+
           {/* fim fichas */}
         </Container>
       </ScrollView>
       <Footer>
-        <TouchableOpacity>
-          <Text>Perfil</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text>Novo cliente</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text>Nova ficha</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text>Sair</Text>
-        </TouchableOpacity>
+        <FotButton
+          onPress={() => {
+            props.navigation.navigate('EditUsuario');
+          }}
+        >
+          <FotText>Perfil</FotText>
+        </FotButton>
+        <FotButton
+          onPress={() => {
+            props.navigation.navigate('CadCliente');
+          }}
+        >
+          <FotText>Novo cliente</FotText>
+        </FotButton>
+        <FotButton
+          onPress={() => {
+            props.navigation.navigate('CadFicha');
+          }}
+        >
+          <FotText>Nova ficha</FotText>
+        </FotButton>
+        <FotButton
+          onPress={() => {
+            props.navigation.navigate('SignIn');
+          }}
+        >
+          <FotText>Sair</FotText>
+        </FotButton>
       </Footer>
     </Container>
   );
 };
 
-export default SignIn;
+export default ListFichas;

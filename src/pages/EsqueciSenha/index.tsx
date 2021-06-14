@@ -13,9 +13,10 @@ import {
   Text,
   CadButton,
   TextContainer,
+  SubText,
 } from './styles';
 
-const EsqueciSenha: React.FC = () => {
+const EsqueciSenha: React.FC = props => {
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
@@ -23,20 +24,24 @@ const EsqueciSenha: React.FC = () => {
     >
       <Container source={Login}>
         <LogoText>Ficha Facial Digital</LogoText>
-        <Text>Insira o email para a recuperação de senha</Text>
+        <SubText>Insira o email para a recuperação de senha</SubText>
         <Form>
           <Input name="email" icon="mail" placeholder="E-mail" />
           <Button
             onPress={() => {
-              console.log('deu');
+              props.navigation.navigate('SignIn');
             }}
           >
-            Entrar
+            Recuperar
           </Button>
         </Form>
 
         <TextContainer>
-          <CadButton>
+          <CadButton
+            onPress={() => {
+              props.navigation.goBack();
+            }}
+          >
             <Text style={{ color: '#3741FF' }}>Cancelar</Text>
           </CadButton>
         </TextContainer>

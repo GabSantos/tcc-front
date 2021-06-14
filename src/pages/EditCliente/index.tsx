@@ -7,7 +7,7 @@ import InputFicha from '../../components/InputFicha';
 import Button from '../../components/Button';
 import DatePicker from '../../components/DatePicker';
 
-import { Container, Form, Title } from './styles';
+import { Container, Exit, Form, Icon, Title } from './styles';
 
 const EditCliente: React.FC = () => {
   // date picker
@@ -39,11 +39,13 @@ const EditCliente: React.FC = () => {
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <Container>
-        <View>
-          <TouchableOpacity>
-            <Text style={{ color: '#3741FF' }}>X</Text>
-          </TouchableOpacity>
-        </View>
+        <Exit
+          onPress={() => {
+            props.navigation.goBack();
+          }}
+        >
+          <Icon name="arrow-left" size={24} />
+        </Exit>
         <Title>Dados pessoais</Title>
         <Form>
           <InputFicha name="nome" label="Nome" />

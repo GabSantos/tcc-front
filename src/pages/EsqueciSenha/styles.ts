@@ -41,3 +41,14 @@ export const TextContainer = styled.View`
   align-items: center;
   justify-content: center;
 `;
+
+export const SubText = styled.Text`
+  font-size: 24px;
+  font-family: 'MontserratMedium';
+  width: 300px;
+  margin-bottom: 22px;
+  text-align: center;
+  color: rgba(26, 26, 29, 1);
+
+  text-shadow: 2px 4px 8px rgba(26, 26, 29, 0.22);
+`;

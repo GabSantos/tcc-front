@@ -7,9 +7,9 @@ import InputFicha from '../../components/InputFicha';
 import Button from '../../components/Button';
 import DatePicker from '../../components/DatePicker';
 
-import { Container, Form, Title } from './styles';
+import { Container, Exit, Form, Icon, Title } from './styles';
 
-const CadCliente: React.FC = () => {
+const CadCliente: React.FC = props => {
   // date picker
   const [date, setDate] = useState(new Date());
   const [data, setData] = useState('');
@@ -39,11 +39,13 @@ const CadCliente: React.FC = () => {
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <Container>
-        <View>
-          <TouchableOpacity>
-            <Text style={{ color: '#3741FF' }}>X</Text>
-          </TouchableOpacity>
-        </View>
+        <Exit
+          onPress={() => {
+            props.navigation.goBack();
+          }}
+        >
+          <Icon name="arrow-left" size={24} />
+        </Exit>
         <Title>Dados pessoais</Title>
         <Form>
           <InputFicha name="nome" label="Nome" />
@@ -87,7 +89,7 @@ const CadCliente: React.FC = () => {
 
           <Button
             onPress={() => {
-              console.log('deu');
+              props.navigation.navigate('ListFichas');
             }}
           >
             Cadastrar

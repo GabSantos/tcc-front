@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add react-native-web-view
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add -D @types/rn-draw
 
 PATH: 
   C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\Git\cmd;C:\Program Files\Java\jdk1.8.0_261\bin;C:\Program Files\dotnet\;C:\Program Files\PuTTY\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Users\Gabgol\AppData\Local\Programs\Python\Python37\Scripts\;C:\Users\Gabgol\AppData\Local\Programs\Python\Python37\;C:\Users\Gabgol\AppData\Local\Programs\AdoptOpenJDK\bin;C:\Users\Gabgol\AppData\Local\Microsoft\WindowsApps;C:\Users\Gabgol\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Gabgol\AppData\Roaming\npm;C:\Users\Gabgol\AppData\Local\Yarn\bin;C:\Users\Gabgol\AppData\Local\hyper\app-3.0.2\resources\bin;C:\Users\Gabgol\AppData\Local\Programs\aog_cli;C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin;C:\Users\Gabgol\.dotnet\tools;C:\Users\Gabgol\Documents\apache-maven-3.6.3\bin;
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/react-native-web-view: Not found
+  Error: https://registry.yarnpkg.com/@types%2frn-draw: Not found
       at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66096:18)
       at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:140748:22)
       at Request.emit (events.js:314:20)
@@ -55,9 +55,9 @@ npm manifest:
       "react-native-reanimated": "~2.1.0",
       "react-native-safe-area-context": "3.2.0",
       "react-native-screens": "~3.0.0",
-      "react-native-signature-canvas": "^4.0.0",
       "react-native-vector-icons": "^8.1.0",
       "react-native-web": "~0.13.12",
+      "rn-draw": "^0.0.6",
       "styled-components": "^5.2.3"
     },
     "devDependencies": {
@@ -6737,11 +6737,6 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.0.0.tgz#ee4c2d69abf7411603868b57214feec5e8f637fa"
     integrity sha512-35II5oxTaVp3OP8y0eLPOPpQkxG4fRKQ+dL1YSE1we5kCZFOU0l/Rn0T79HbyUu1LPwUZr6lZupPs0ULnRyMuQ==
   
-  react-native-signature-canvas@^4.0.0:
-    version "4.0.0"
-    resolved "https://registry.yarnpkg.com/react-native-signature-canvas/-/react-native-signature-canvas-4.0.0.tgz#66d923f2638f8d09eddfa54bde486833a2708456"
-    integrity sha512-nnaso6oNKOdLOzFz0F1cWY2AwiACoumgY9vpN4Ht2jiXlTa5lAjTlyGVK10/Rp+gE4MlBYkQKandPGXtFEg7Uw==
-  
   react-native-vector-icons@^8.1.0:
     version "8.1.0"
     resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-8.1.0.tgz#e8ee2b17bc4d9f636da1c6f67feee8e2a850c3d8"
@@ -7033,6 +7028,11 @@ Lockfile:
     version "2.2.8"
     resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.2.8.tgz#e439be2aaee327321952730f99a8929e4fc50582"
     integrity sha1-5Dm+Kq7jJzIZUnMPmaiSnk/FBYI=
+  
+  rn-draw@^0.0.6:
+    version "0.0.6"
+    resolved "https://registry.yarnpkg.com/rn-draw/-/rn-draw-0.0.6.tgz#6577695ae079579e83f3e86cfb5c2e8f654d52c1"
+    integrity sha1-ZXdpWuB5V56D8+hs+1wuj2VNUsE=
   
   rsvp@^4.8.4:
     version "4.8.5"
