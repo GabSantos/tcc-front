@@ -1,3 +1,5 @@
+import { TouchableOpacity } from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 
 export const Container = styled.ImageBackground`
@@ -51,4 +53,39 @@ export const SubText = styled.Text`
   color: rgba(26, 26, 29, 1);
 
   text-shadow: 2px 4px 8px rgba(26, 26, 29, 0.22);
+`;
+
+export const Modal = styled.View`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background-color: rgba(26, 25, 25, 0.4);
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ModalContainer = styled.View`
+  height: 400px;
+  width: 300px;
+  background-color: #f4f4f4;
+  border-radius: 25px;
+  padding: 25px;
+  justify-content: space-around;
+`;
+
+export const ModalText = styled.Text`
+  font-size: 24px;
+  font-family: 'MontserratMedium';
+  text-align: center;
+  color: rgba(26, 26, 29, 1);
+`;
+
+export const Icon = styled(Feather)``;
+
+export const Exit = styled(TouchableOpacity)`
+  position: absolute;
+  top: 25px;
+  left: 25px;
 `;

@@ -1,9 +1,9 @@
 import React from 'react';
-import { TextProps, TextInput } from 'react-native';
+import { TextInputProps, TextInput } from 'react-native';
 
 import { Container, Label, OutContainer } from './styles';
 
-interface InputProps extends TextProps {
+interface InputProps extends TextInputProps {
   name: string;
   placeholder?: string;
   label?: string;

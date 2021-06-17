@@ -19,7 +19,7 @@ export const LogoText = styled.Text`
   font-family: 'Pacifico';
   color: #f4f4f4;
   text-align: center;
-  width: 100%;
+  width: 300px;
   margin: 20px 0;
 
   text-shadow: 2px 4px 8px rgba(26, 26, 29, 0.22);

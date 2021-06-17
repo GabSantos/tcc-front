@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
-import { ScrollView, View, Text, Platform } from 'react-native';
+import { ScrollView, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
 import InputFicha from '../../components/InputFicha';
 import Button from '../../components/Button';
@@ -21,10 +20,172 @@ import {
   RadioView,
   Title,
 } from './styles';
+import api from '../../services/api';
 
-const Ficha: React.FC = props => {
+interface CadastroFicha {
+  queixaPrincipal: string;
+  ginecologistaUltimaConsulta?: Date;
+  cicloMenstrualNormal: string;
+  alteracoesCicloMenstrual?: string;
+  primeiraMenstruacao?: Date;
+  ultimaMenstruacao?: Date;
+  sop: string;
+  climaterio: string;
+  menopausa: string;
+  reposicaoHormonal: string;
+  gestante: string;
+  mesesGestacao?: number;
+  quantidadeGravidez: number;
+  quantidadeFilhos: number;
+  idadesFilhos?: string;
+  seiosNormais: string;
+  seiosAlteracoes?: string;
+  contraceptivosHormonais: string;
+  contraceptivosHormonaisTempo?: string;
+  hirsutismo: string;
+  hirsutismoRepentino?: string;
+  hirsutismoIdade?: string;
+  diabetes: string;
+  tireoide: string;
+  marcaPasso: string;
+  cardiacoObservacoes?: string;
+  hipotensao: string;
+  hipertensao: string;
+  alergias?: string;
+  tratamentoDermatologico: string;
+  tratamentoDermatologicoJustificativa?: string;
+  tratamentoDermatologicoEmUso?: string;
+  tratamentoDermatologicoEmUsoTempo?: string;
+  tratamentoDermatologicoAnterior: string;
+  tratamentoDermatologicoAnteriorJustificativa?: string;
+  tratamentoDermatologicoAnteriorUsado?: string;
+  tratamentoDermatologicoAnteriorTempo?: string;
+  ansiedade: string;
+  impaciencia: string;
+  depressao: string;
+  choqueEmocional: string;
+  usaAntidepressivos: string;
+  antidepressivos?: string;
+  sonoId: number;
+  usaRemediosParaDormir: string;
+  sensibilidadeADorId: number;
+  estresseId: number;
+  checkupsMedicosRegularmente: string;
+  enfermidadesAtuais?: string;
+  enfermidadesAnteriores?: string;
+  medicamentosDores: string;
+  medicamentosEpilepsia: string;
+  medicamentosAntecedentesOncologicos: string;
+  medicamentosRetencaoHidrica: string;
+  medicamentosRosacea: string;
+  medicamentosLentesDeContato: string;
+  medicamentosTonturas: string;
+  medicamentosProblemasRenais: string;
+  medicamentosLupus: string;
+  medicamentosQueloides: string;
+  medicamentosImplanteDentario: string;
+  medicamentosFaltaDeAr: string;
+  medicamentosUsoDeCorticoides: string;
+  medicamentosPsoriase: string;
+  medicamentosDermatiteSeborreica: string;
+  medicamentosPlacasMetalicasFace: string;
+  frequenciaAtividadesFisicasId: number;
+  atividadesFisicas?: string;
+  alimentacao: string;
+  aguaQuantidade: string;
+  aguaCopos: string;
+  etilismo: string;
+  fumante: string;
+  cigarrosDia?: string;
+  fumanteInicio?: string;
+  fumanteFim?: string;
+  funcaoIntestinalId: number;
+  funcaoIntestinalObs?: string;
+  informacoesComplementares?: string;
+  tratamentosEsteticosAnteriores?: string;
+  cirurgiaPlasticaFace?: string;
+  cirurgiaPlasticaFaceTempo?: string;
+  usoDeCosmeticosLimpeza?: string;
+  usoDeCosmeticosEsfoliacao?: string;
+  usoDeCosmeticosTonificacao?: string;
+  usoDeCosmeticosAcidos?: string;
+  usoDeCosmeticosHidratacao?: string;
+  usoDeCosmeticosTratamentosEspecificos?: string;
+  usoDeCosmeticosFotoprotecao?: string;
+  exposicaoSolarId: number;
+  usoDeCosmeticosMaquiagem?: string;
+  cosmeticosSensibilidade?: string;
+  fototipoId: number;
+  etniaId: number;
+  tipoPeleId: number;
+  peleAoTatoId: number;
+  peleSensibilidadeId: number;
+  peleSensibilidadeObservacao?: string;
+  acromias: string;
+  hipocromias: string;
+  efelides: string;
+  melasmas: string;
+  lentigos: string;
+  melanose: string;
+  hipercromiaPosTraumatica: string;
+  hipercromiaPosInflamatoria: string;
+  xantelasmas: string;
+  hiperplasiaSebacea: string;
+  cicatrizes: string;
+  seborreia: string;
+  flacidezMuscular: string;
+  comedoesCapilares: string;
+  eritemas: string;
+  verrugas: string;
+  queratosePilarFolicular: string;
+  asfitica: string;
+  ostiosDilatados: string;
+  flacidezTissular: string;
+  microcomedoes: string;
+  edemas: string;
+  nevos: string;
+  dermografismo: string;
+  talangiectasias: string;
+  miliuns: string;
+  escoriacoes: string;
+  comedoesAbertos: string;
+  hematomas: string;
+  fotoenvelhecimentoId: number;
+  verrugasFrontal?: string;
+  verrugasGlabela?: string;
+  verrugasOrbicularOlhos?: string;
+  verrugasOrbicularLabios?: string;
+  verrugasLateralFace?: string;
+  verrugasSulcoNasogeniano?: string;
+  verrugasPescoco?: string;
+  verrugasColo?: string;
+  pustulas: string;
+  nodulos: string;
+  comedoesFechados: string;
+  papulas: string;
+  acneGrauId?: number;
+  acneJuvenilVulgar: string;
+  acneTardia: string;
+  acneFamilia: string;
+  acneInicio?: string;
+  acneEvolucao?: string;
+  outrasConsideracoes?: string;
+  assinaturaCliente: File;
+  imagemRosto: File;
+  ativo: string;
+  clienteId: number;
+}
+
+const EditFicha: React.FC = props => {
+  const { token, fichaId } = props.route.params;
+
+  const [queixaPrincipal, setQueixaPrincipal] = useState('');
+
   const [ultimaConsulta, setUltimaConsulta] = useState(new Date());
   const [cicloMenstrualNormal, setCicloMenstrualNormal] = useState('S');
+
+  const [alteracoesCicloMenstrual, setAlteracoesCicloMenstrual] = useState('');
+
   const [primeiraMenstruacao, setPrimeiraMenstruacao] = useState(new Date());
   const [ultimaMenstruacao, setUltimaMenstruacao] = useState(new Date());
   const [sop, setSop] = useState('N');
@@ -32,29 +193,80 @@ const Ficha: React.FC = props => {
   const [menopausa, setMenopausa] = useState('N');
   const [reposicaoHormonal, setReposicaoHormonal] = useState('N');
   const [gestante, setGestante] = useState('N');
+
+  const [mesesGestacao, setMesesGestacao] = useState(0); // transformar em int
+
   const [nroGravidez, setNroGravidez] = useState(0);
   const [nroFilhos, setNroFilhos] = useState(0);
+
+  const [idadeFilhos, setIdadeFilhos] = useState('');
+
   const [seios, setSeios] = useState('S');
+
+  const [seiosAlteracoes, setSeiosAlteracoes] = useState('');
+
   const [contraceptivos, setContraceptivos] = useState('N');
+
+  const [contraceptivosTempo, setContraceptivosTempo] = useState('');
+
   const [hirsutismo, setHirsutismo] = useState('N');
   const [hirsutismoRepentino, setHirsutismoRepentino] = useState('N');
+
+  const [hirsutismoIdade, setHirsutismoIdade] = useState('');
+
   const [diabetes, setDiabetes] = useState('N');
   const [tireoide, setTireoide] = useState('N');
   const [marcaPasso, setMarcaPasso] = useState('N');
+
+  const [cardiacoObservacoes, setCardiacoObservacoes] = useState('');
+
   const [hipotensao, setHipotensao] = useState('N');
   const [hipertensao, setHipertensao] = useState('N');
+
+  const [alergias, setAlergias] = useState('');
+
   const [tratamentoDermatologico, setTratamentoDermatologico] = useState('N');
+
+  const [
+    tratamentoDermatologicoJustificativa,
+    settratamentoDermatologicoJustificativa,
+  ] = useState('');
+  const [
+    tratamentoDermatologicoEmUso,
+    settratamentoDermatologicoEmUso,
+  ] = useState('');
+  const [
+    tratamentoDermatologicoTempo,
+    settratamentoDermatologicoTempo,
+  ] = useState('');
+
   const [tratamentoAnterior, setTratamentoAnterior] = useState('N');
+
+  const [
+    tratamentoAnteriorJustivicativa,
+    setTratamentoAnteriorJustivicativa,
+  ] = useState('');
+  const [tratamentoAnteriorUsado, setTratamentoAnteriorUsado] = useState('');
+  const [tratamentoAnteriorTempo, setTratamentoAnteriorTempo] = useState('');
+
   const [ansiedade, setAnsiedade] = useState('N');
   const [impaciencia, setImpaciencia] = useState('N');
   const [depressao, setDepressao] = useState('N');
   const [choqueEmocional, setChoqueEmocional] = useState('N');
   const [antidepressivo, setAntidepressivo] = useState('N');
-  const [sono, setSono] = useState('bom');
+
+  const [antidepressivos, setAntidepressivos] = useState('');
+
+  const [sono, setSono] = useState(1);
   const [remedioDormir, setRemedioDormir] = useState('N');
-  const [sensibilidadeDor, setSensibilidadeDor] = useState('nenhuma');
-  const [estresse, setEstresse] = useState('normal');
+
+  const [sensibilidadeDor, setSensibilidadeDor] = useState(1);
+  const [estresse, setEstresse] = useState(1);
   const [checkups, setCheckups] = useState('N');
+
+  const [enfermidadesAtuais, setEnfermidadesAtuais] = useState('');
+  const [enfermidadesAnteriores, setEnfermidadesAnteriores] = useState('');
+
   const [dores, setDores] = useState('N');
   const [epilepsia, setEpilepsia] = useState('N');
   const [antecedentesOncologicos, setAntecedentesOncologicos] = useState('N');
@@ -71,9 +283,116 @@ const Ficha: React.FC = props => {
   const [psoriase, setPsoriase] = useState('N');
   const [dermatiteSeborreica, setDermatiteSeborreica] = useState('N');
   const [placasMetalicasNaFace, setPlacasMetalicasNaFace] = useState('N');
-  const [atividadesFisicas, setAtividadesFisicas] = useState('nenhuma');
+  const [atividadesFisicas, setAtividadesFisicas] = useState(1);
+
+  const [quaisAtividades, setQuaisAtividades] = useState('');
+  const [alimentacao, setAlimentacao] = useState('');
+  const [aguaQuantidade, setAguaQuantidade] = useState('');
+  const [aguaCopos, setAguaCopos] = useState('');
+  const [etilismo, setEtilismo] = useState('');
+
   const [fumante, setFumante] = useState('N');
-  const [funcaoIntestinal, setFuncaoIntestinal] = useState('Regular');
+
+  const [cigarrosDia, setCigarrosDia] = useState('');
+  const [cigarrosInicio, setCigarrosInicio] = useState('');
+  const [cigarrosFim, setCigarrosFim] = useState('');
+
+  const [funcaoIntestinal, setFuncaoIntestinal] = useState(1);
+
+  const [funcaoIntestinalObs, setFuncaoIntestinalObs] = useState('');
+  const [infoComplementar, setInfoComplementar] = useState('');
+  const [tratamentosAnteriores, setTratamentosAnteriores] = useState('');
+  const [cirurgiaPlastica, setCirurgiaPlastica] = useState('N');
+  const [cirurgiaPlasticaFace, setCirurgiaPlasticaFace] = useState('');
+  const [cirurgiaPlasticaFaceTempo, setCirurgiaPlasticaFaceTempo] = useState(
+    '',
+  );
+  const [limpeza, setLimpeza] = useState('');
+  const [esfoliacao, setEsfoliacao] = useState('');
+  const [tonioficacao, setTonioficacao] = useState('');
+  const [acidos, setAcidos] = useState('');
+  const [hidratacao, setHidratacao] = useState('');
+  const [tratamentosEspecificos, setTratamentosEspecificos] = useState('');
+  const [fotoprotecao, setFotoprotecao] = useState('');
+
+  const [exposicaoSolar, setExposicaoSolar] = useState(1);
+
+  const [usoCosmeticos, setusoCosmeticos] = useState('');
+  const [usoCosmeticosSensibilidade, setusoCosmeticosSensibilidade] = useState(
+    '',
+  );
+
+  const [fitzpatrick, setFitzpatrick] = useState(1);
+  const [etnia, setEtnia] = useState(1);
+  const [tipoPele, setTipoPele] = useState(1);
+  const [aoTato, setAoTato] = useState(1);
+  const [sensibilidadePele, setSensibilidadePele] = useState(1);
+
+  const [sensibilidadePeleObs, setSensibilidadePeleObs] = useState('');
+
+  const [acromias, setAcromias] = useState('N');
+  const [hipocromias, setHipocromias] = useState('N');
+  const [efelides, setEfelides] = useState('N');
+  const [melasmas, setMelasmas] = useState('N');
+  const [lentigos, setLentigos] = useState('N');
+  const [melanose, setMelanose] = useState('N');
+  const [posTraumatica, setPosTraumatica] = useState('N');
+  const [posInflamatoria, setPosInflamatoria] = useState('N');
+  const [xantelasmas, setXantelasmas] = useState('N');
+  const [hiperplasiaSebacea, setHiperplasiaSebacea] = useState('N');
+  const [cicatrizes, setCicatrizes] = useState('N');
+  const [seborreia, setSeborreia] = useState('N');
+  const [flacidesMuscular, setFlacidesMuscular] = useState('N');
+  const [comedoesCapilares, setComedoesCapilares] = useState('N');
+  const [eritemas, setEritemas] = useState('N');
+  const [verrugas, setVerrugas] = useState('N');
+  const [queratose, setQueratose] = useState('N');
+  const [asfitica, setAsfitica] = useState('N');
+  const [ostiosDilatados, setOstiosDilatados] = useState('N');
+  const [flacidezTissular, setFlacidezTissular] = useState('N');
+  const [micromedoes, setMicromedoes] = useState('N');
+  const [edemas, setEdemas] = useState('N');
+  const [nevos, setNevos] = useState('N');
+  const [dermografismo, setDermografismo] = useState('N');
+  const [talangiectasias, setTalangiectasias] = useState('N');
+  const [miliuns, setMiliuns] = useState('N');
+  const [escoriacoes, setEscoriacoes] = useState('N');
+  const [comedoesAbertos, setComedoesAbertos] = useState('N');
+  const [hematomas, setHematomas] = useState('N');
+  const [fotoenvelhecimento, setFotoenvelhecimento] = useState(1);
+
+  const [verrugasFrontal, setVerrugasFrontal] = useState('');
+  const [verrugasGlabela, setVerrugasGlabela] = useState('');
+  const [verrugasOrbicularOlhos, setVerrugasOrbicularOlhos] = useState('');
+  const [verrugasOrbicularLabios, setVerrugasOrbicularLabios] = useState('');
+  const [verrugasLateralFace, setVerrugasLateralFace] = useState('');
+  const [verrugasSulco, setVerrugasSulco] = useState('');
+  const [verrugasPescoco, setVerrugasPescoco] = useState('');
+  const [verrugasColo, setVerrugasColo] = useState('');
+
+  // const [comedoesCapilaresAcne, setComedoesCapilaresAcne] = useState('N');
+  // const [micromedoesAcne, setMicromedoesAcne] = useState('N');
+  // const [comedoesAbertosAcne, setComedoesAbertosAcne] = useState('N');
+  const [pustulas, setPustulas] = useState('N');
+  const [nodulos, setNodulos] = useState('N');
+  const [comedoesFechadosAcne, setComedoesFechadosAcne] = useState('N');
+  const [papulas, setPapulas] = useState('N');
+
+  const [grauAcne, setGrauAcne] = useState(1);
+
+  // const [escoriacoesAcne, setEscoriacoesAcne] = useState('N');
+  const [juvenilVulgar, setJuvenilVulgar] = useState('N');
+  const [tardia, setTardia] = useState('N');
+  const [acneFamilia, setAcneFamilia] = useState('N');
+
+  const [acneInicio, setAcneInicio] = useState('');
+  const [acneEvolucao, setAcneEvolucao] = useState('');
+  const [outrasConsideracoes, setOutrasConsideracoes] = useState('');
+
+  const [cliente, setCliente] = useState(0);
+  const [assinatura, setAssinatura] = useState(null);
+  const [imagem, setImagem] = useState(null);
+  const [ativo, setAtivo] = useState('S');
 
   // #region  date picker Ultima Consulta
   const [ultimaConsultaText, setUltimaConsultaText] = useState('');
@@ -132,6 +451,229 @@ const Ficha: React.FC = props => {
   };
   // #endregion date picker fm
 
+  const [clientesLista, setClientesLista] = useState([]);
+  const [grausAcneLista, setGrausAcneLista] = useState([]);
+  const [estresseLista, setEstresseLista] = useState([]);
+  const [etniaLista, setEtniaLista] = useState([]);
+  const [exposicaoSolarLista, setExposicaoSolarLista] = useState([]);
+  const [fotoenvelhecimentoLista, setFotoenvelhecimentoLista] = useState([]);
+  const [fototipoLista, setFototipoLista] = useState([]);
+  const [freqAtvFisicaLista, setFreqAtvFisicaLista] = useState([]);
+  const [funcIntestinalLista, setFuncIntestinalLista] = useState([]);
+  const [peleAoTatoLista, setPeleAoTatoLista] = useState([]);
+  const [peleSensibilidadeLista, setPeleSensibilidadeLista] = useState([]);
+  const [sensibilidadeDorLista, setSensibilidadeDorLista] = useState([]);
+  const [sonoLista, setSonoLista] = useState([]);
+  const [tipoPeleLista, setTipoPeleLista] = useState([]);
+  const [data, setData] = useState(new Date());
+
+  api
+    .get('aux', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then(resp => {
+      setGrausAcneLista(resp.data.acneGrau);
+      setEstresseLista(resp.data.estresse);
+      setEtniaLista(resp.data.etnia);
+      setExposicaoSolarLista(resp.data.exposicaoSolar);
+      setFotoenvelhecimentoLista(resp.data.fotoenvelhecimento);
+      setFototipoLista(resp.data.fototipo);
+      setFreqAtvFisicaLista(resp.data.frequenciaAtividadesFisicas);
+      setFuncIntestinalLista(resp.data.funcaoIntestinal);
+      setPeleAoTatoLista(resp.data.peleAoTato);
+      setPeleSensibilidadeLista(resp.data.peleSensibilidade);
+      setSensibilidadeDorLista(resp.data.sensibilidadeADor);
+      setSonoLista(resp.data.sono);
+      setTipoPeleLista(resp.data.tipoPele);
+    })
+    .catch(e => console.log(e));
+
+  api
+    .get(`record/${fichaId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then(resp => {
+      setQueixaPrincipal(resp.data.queixa_principal);
+      setUltimaConsulta(resp.data.ginecologista_ultima_consulta || new Date());
+      setCicloMenstrualNormal(resp.data.ciclo_menstrual_normal);
+      setAlteracoesCicloMenstrual(resp.data.ciclo_menstrual_normal || 'S');
+      setPrimeiraMenstruacao(resp.data.primeira_menstruacao || new Date());
+      setUltimaMenstruacao(resp.data.ultima_menstruacao || new Date());
+      setSop(resp.data.sop);
+      setClimaterio(resp.data.climaterio);
+      setMenopausa(resp.data.menopausa);
+      setReposicaoHormonal(resp.data.reposicao_hormonal);
+      setGestante(resp.data.gestante);
+      setMesesGestacao(resp.data.meses_gestacao || 0);
+      setNroGravidez(resp.data.quantidade_gravidez || 0);
+      setNroFilhos(resp.data.quantidade_filhos || 0);
+      setIdadeFilhos(resp.data.idades_filhos || '');
+      setSeios(resp.data.seios_normais || 'S');
+      setSeiosAlteracoes(resp.data.seios_alteracoes || '');
+      setContraceptivos(resp.data.contraceptivos_hormonais || 'N');
+      setContraceptivosTempo(resp.data.contraceptivos_hormonais_tempo || '');
+      setHirsutismo(resp.data.hirsutismo || 'N');
+      setHirsutismoRepentino(resp.data.hirsutismo_repentino || 'N');
+      setHirsutismoIdade(resp.data.hirsutismo_idade || '');
+      setDiabetes(resp.data.diabetes || 'N');
+      setTireoide(resp.data.tireoide || 'N');
+      setMarcaPasso(resp.data.marca_passo || 'N');
+      setCardiacoObservacoes(resp.data.cardiaco_observacoes || '');
+      setHipotensao(resp.data.hipotensao || 'N');
+      setHipertensao(resp.data.hipertensao || 'N');
+      setAlergias(resp.data.alergias || '');
+      setTratamentoDermatologico(resp.data.tratamento_dermatologico || 'N');
+
+      settratamentoDermatologicoJustificativa(
+        resp.data.tratamento_dermatologico_justificativa || '',
+      );
+      settratamentoDermatologicoEmUso(
+        resp.data.tratamento_dermatologico_em_uso || '',
+      );
+      settratamentoDermatologicoTempo(
+        resp.data.tratamento_dermatologico_em_uso_tempo || '',
+      );
+      setTratamentoAnterior(resp.data.tratamento_dermatologico_anterior || 'N');
+
+      setTratamentoAnteriorJustivicativa(
+        resp.data.tratamento_anterior_justificativa || '',
+      );
+      setTratamentoAnteriorUsado(resp.data.tratamento_anterior_usado || '');
+      setTratamentoAnteriorTempo(resp.data.tratamento_anterior_tempo || '');
+      setAnsiedade(resp.data.ansiedade || 'N');
+      setImpaciencia(resp.data.impaciencia || 'N');
+      setDepressao(resp.data.depressao || 'N');
+      setChoqueEmocional(resp.data.choque_emocional || 'N');
+      setAntidepressivo(resp.data.usa_antidepressivos || 'N');
+      setAntidepressivos(resp.data.antidepressivos || '');
+      setSono(resp.data.sono_id || 1);
+      setRemedioDormir(resp.data.usa_remedios_para_dormir || 'N');
+      setSensibilidadeDor(resp.data.sensibilidade_a_dor || 1);
+      setEstresse(resp.data.estresse_id || 1);
+      setCheckups(resp.data.checkups_medicos_regularmente || 'N');
+      setEnfermidadesAtuais(resp.data.enfermidades_atuais || '');
+      setEnfermidadesAnteriores(resp.data.enfermidades_anteriores || '');
+      setDores(resp.data.medicamentos_dores || 'N');
+      setEpilepsia(resp.data.medicamentos_epilepsia || 'N');
+      setAntecedentesOncologicos(
+        resp.data.medicamentos_antecedentes_oncologicos || 'N',
+      );
+      setRetencaoHidrica(resp.data.medicamentos_retencao_hidrica || 'N');
+      setRosacea(resp.data.medicamentos_rosacea || 'N');
+      setLentesDeContato(resp.data.medicamentos_lentes_de_contato || 'N');
+      setTonturas(resp.data.medicamentos_tonturas || 'N');
+      setProblemasRenais(resp.data.medicamentos_problemas_renais || 'N');
+      setLupus(resp.data.medicamentos_lupus || 'N');
+      setQueloides(resp.data.medicamentos_queloides || 'N');
+      setImplanteDentario(resp.data.medicamentos_implante_dentario || 'N');
+      setFaltaDeAr(resp.data.medicamentos_falta_de_ar || 'N');
+      setUsoDeCorticoides(resp.data.medicamentos_uso_de_corticoides || 'N');
+      setPsoriase(resp.data.medicamentos_psoriase || 'N');
+      setDermatiteSeborreica(
+        resp.data.medicamentos_dermatite_seborreica || 'N',
+      );
+      setPlacasMetalicasNaFace(
+        resp.data.medicamentos_placas_metalicas_face || 'N',
+      );
+      setAtividadesFisicas(resp.data.frequencia_atividades_fisicas_id || 1);
+      setQuaisAtividades(resp.data.atividades_fisicas || '');
+      setAlimentacao(resp.data.alimentacao || '');
+      setAguaQuantidade(resp.data.agua_quantidade || '');
+      setAguaCopos(resp.data.agua_copos || '');
+      setEtilismo(resp.data.eitilismo || '');
+      setFumante(resp.data.fumante || 'N');
+      setCigarrosDia(resp.data.cigarros_dia || '');
+      setCigarrosInicio(resp.data.fumante_inicio || '');
+      setCigarrosFim(resp.data.fumante_fim || '');
+      setFuncaoIntestinal(resp.data.funcao_intestinal_id || 1);
+      setFuncaoIntestinalObs(resp.data.funcao_intestinal_obs || '');
+      setInfoComplementar(resp.data.informacoes_complementares || '');
+      setTratamentosAnteriores(
+        resp.data.tratamentos_esteticos_anteriores || '',
+      );
+      // setCirurgiaPlastica(resp.data.||'N');
+      setCirurgiaPlasticaFace(resp.data.cirurgia_plastica_face || '');
+      setCirurgiaPlasticaFaceTempo(
+        resp.data.cirurgia_plastica_face_tempo || '',
+      );
+      setLimpeza(resp.data.uso_de_cosmeticos_limpeza || '');
+      setEsfoliacao(resp.data.uso_de_cosmeticos_esfoliacao || '');
+      setTonioficacao(resp.data.uso_de_cosmeticos_tonificacao || '');
+      setAcidos(resp.data.uso_de_cosmeticos_acidos || '');
+      setHidratacao(resp.data.uso_de_cosmeticos_hidratacao || '');
+      setTratamentosEspecificos(
+        resp.data.uso_de_cosmeticos_tratamentos_especificos || '',
+      );
+      setFotoprotecao(resp.data.uso_de_cosmeticos_fotoprotecao || '');
+      setExposicaoSolar(resp.data.exposicao_solar_id || 1);
+      setusoCosmeticos(resp.data.uso_de_cosmeticos_maquiagem || '');
+      setusoCosmeticosSensibilidade(resp.data.cosmeticos_sensibilidade || '');
+      setFitzpatrick(resp.data.fototipo_id || 1);
+      setEtnia(resp.data.etnia_id || 1);
+      setTipoPele(resp.data.tipo_pele_id || 1);
+      setAoTato(resp.data.pele_ao_tato_id || 1);
+      setSensibilidadePele(resp.data.pele_sensibilidade_id || 1);
+      setSensibilidadePeleObs(resp.data.pele_sensibilidade_observacao || '');
+      setAcromias(resp.data.acromias || 'N');
+      setHipocromias(resp.data.hipocromias || 'N');
+      setEfelides(resp.data.efelides || 'N');
+      setMelasmas(resp.data.melasmas || 'N');
+      setLentigos(resp.data.lentigos || 'N');
+      setMelanose(resp.data.melanose || 'N');
+      setPosTraumatica(resp.data.hipercromia_pos_traumatica || 'N');
+      setPosInflamatoria(resp.data.hipercromia_pos_inflamatoria || 'N');
+      setXantelasmas(resp.data.xantelasmas || 'N');
+      setHiperplasiaSebacea(resp.data.hiperblasia_sebacea || 'N');
+      setCicatrizes(resp.data.cicatrizes || 'N');
+      setSeborreia(resp.data.seborreia || 'N');
+      setFlacidesMuscular(resp.data.flacidez_muscular || 'N');
+      setComedoesCapilares(resp.data.comedoes_capilares || 'N');
+      setEritemas(resp.data.eritemas || 'N');
+      setVerrugas(resp.data.verrugas || 'N');
+      setQueratose(resp.data.queratose_pilar_folicular || 'N');
+      setAsfitica(resp.data.asfitica || 'N');
+      setOstiosDilatados(resp.data.ostios_dilatados || 'N');
+      setFlacidezTissular(resp.data.flacidez_tissular || 'N');
+      setMicromedoes(resp.data.microcomedoes || 'N');
+      setEdemas(resp.data.edemas || 'N');
+      setNevos(resp.data.nevos || 'N');
+      setDermografismo(resp.data.dermografismo || 'N');
+      setTalangiectasias(resp.data.talangiectasias || 'N');
+      setMiliuns(resp.data.miliuns || 'N');
+      setEscoriacoes(resp.data.escoriacoes || 'N');
+      setComedoesAbertos(resp.data.comedoes_abertos || 'N');
+      setHematomas(resp.data.hematomas || 'N');
+      setFotoenvelhecimento(resp.data.fotoenvelhecimento_id || 1);
+      setVerrugasFrontal(resp.data.verrugas_frontal || '');
+      setVerrugasGlabela(resp.data.verrugas_glabela || '');
+      setVerrugasOrbicularOlhos(resp.data.verrugas_orbicular_olhos || '');
+      setVerrugasOrbicularLabios(resp.data.verrugas_orbicular_labios || '');
+      setVerrugasLateralFace(resp.data.verrugas_lateral_face || '');
+      setVerrugasSulco(resp.data.verrugas_sulco || '');
+      setVerrugasPescoco(resp.data.verrugas_pescoco || '');
+      setVerrugasColo(resp.data.verrugas_colo || '');
+      setPustulas(resp.data.pustulas || 'N');
+      setNodulos(resp.data.nodulos || 'N');
+      setComedoesFechadosAcne(resp.data.comedoes_fechados || 'N');
+      setPapulas(resp.data.papulas || 'N');
+      setGrauAcne(resp.data.acne_grau_id || 1);
+      setJuvenilVulgar(resp.data.acne_juvenil_vulgar || 'N');
+      setTardia(resp.data.acne_tardia || 'N');
+      setAcneFamilia(resp.data.acne_familia || 'N');
+      setAcneInicio(resp.data.acne_inicio || '');
+      setAcneEvolucao(resp.data.acne_evolucao || '');
+      setOutrasConsideracoes(resp.data.outras_consideracoes || '');
+      setData(resp.data.data || new Date());
+      setAssinatura(resp.data.assinatura_cliente);
+      setImagem(resp.data.imagem_rosto);
+      setCliente(resp.data.cliente_id);
+    })
+    .catch(e => console.log(e));
+
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
@@ -147,7 +689,14 @@ const Ficha: React.FC = props => {
         </Exit>
         <Title>Dados gerais de saúde e hábitos de vida</Title>
         <Form>
-          <InputFicha name="queixa" label="Queixa principal" />
+          <Button>Realizar consulta</Button>
+          <Button>Editar cliente</Button>
+          <InputFicha
+            value={queixaPrincipal}
+            onChangeText={setQueixaPrincipal}
+            name="queixa"
+            label="Queixa principal"
+          />
           {/* Ginecológico */}
           <>
             <Area>
@@ -188,6 +737,8 @@ const Ficha: React.FC = props => {
               />
             </RadioView>
             <InputFicha
+              value={alteracoesCicloMenstrual}
+              onChangeText={setAlteracoesCicloMenstrual}
               name="ciclo_menstrual_alteracoes"
               placeholder="Alterações"
             />
@@ -314,7 +865,30 @@ const Ficha: React.FC = props => {
                 onPress={() => setGestante('N')}
               />
             </RadioView>
-            <InputFicha name="meses_gestacao" placeholder="Quantos meses?" />
+            <RadioView>
+              <RadioLabel>Meses de gestação: </RadioLabel>
+              <Picker
+                style={{ height: 40, width: 300 }}
+                selectedValue={mesesGestacao}
+                onValueChange={(itemValue, itemIndex) =>
+                  setMesesGestacao(itemValue)
+                }
+              >
+                <Picker.Item label="0" value={0} />
+                <Picker.Item label="1" value={1} />
+                <Picker.Item label="2" value={2} />
+                <Picker.Item label="3" value={3} />
+                <Picker.Item label="4" value={4} />
+                <Picker.Item label="5" value={5} />
+                <Picker.Item label="6" value={6} />
+                <Picker.Item label="7" value={7} />
+                <Picker.Item label="8" value={8} />
+                <Picker.Item label="9" value={9} />
+                <Picker.Item label="10" value={10} />
+                <Picker.Item label="11" value={11} />
+                <Picker.Item label="12" value={12} />
+              </Picker>
+            </RadioView>
             <RadioView>
               <RadioLabel>Número de gravidez</RadioLabel>
               <Picker
@@ -335,6 +909,8 @@ const Ficha: React.FC = props => {
                 <Picker.Item label="8" value={8} />
                 <Picker.Item label="9" value={9} />
                 <Picker.Item label="10" value={10} />
+                <Picker.Item label="11" value={11} />
+                <Picker.Item label="12" value={12} />
               </Picker>
             </RadioView>
 
@@ -358,10 +934,17 @@ const Ficha: React.FC = props => {
                 <Picker.Item label="8" value={8} />
                 <Picker.Item label="9" value={9} />
                 <Picker.Item label="10" value={10} />
+                <Picker.Item label="11" value={11} />
+                <Picker.Item label="12" value={12} />
               </Picker>
             </RadioView>
 
-            <InputFicha name="idades_filhos" placeholder="Idades dos filhos" />
+            <InputFicha
+              value={idadeFilhos}
+              onChangeText={setIdadeFilhos}
+              name="idades_filhos"
+              placeholder="Idades dos filhos"
+            />
 
             <RadioTitle>Seios normais :</RadioTitle>
             <RadioView>
@@ -380,7 +963,12 @@ const Ficha: React.FC = props => {
                 onPress={() => setSeios('N')}
               />
             </RadioView>
-            <InputFicha name="seios_alteracoes" placeholder="Alterações" />
+            <InputFicha
+              value={seiosAlteracoes}
+              onChangeText={setSeiosAlteracoes}
+              name="seios_alteracoes"
+              placeholder="Alterações"
+            />
 
             <RadioTitle>Contraceptivos hormonais :</RadioTitle>
             <RadioView>
@@ -400,6 +988,8 @@ const Ficha: React.FC = props => {
               />
             </RadioView>
             <InputFicha
+              value={contraceptivosTempo}
+              onChangeText={setContraceptivosTempo}
               name="contraceptivos_hormonais"
               placeholder="Há quanto tempo?"
             />
@@ -440,6 +1030,8 @@ const Ficha: React.FC = props => {
               />
             </RadioView>
             <InputFicha
+              value={hirsutismoIdade}
+              onChangeText={setHirsutismoIdade}
               name="hisurtismo_idade"
               placeholder="Desde que idade?"
             />
@@ -510,7 +1102,12 @@ const Ficha: React.FC = props => {
                 onPress={() => setMarcaPasso('N')}
               />
             </RadioView>
-            <InputFicha name="cardiaco_observacoes" placeholder="Outros" />
+            <InputFicha
+              value={cardiacoObservacoes}
+              onChangeText={setCardiacoObservacoes}
+              name="cardiaco_observacoes"
+              placeholder="Outros"
+            />
           </>
 
           {/* Vascular */}
@@ -561,7 +1158,12 @@ const Ficha: React.FC = props => {
             <Area>
               <AreaText>Alergias</AreaText>
             </Area>
-            <InputFicha name="alergias" placeholder="Quais?" />
+            <InputFicha
+              value={alergias}
+              onChangeText={setAlergias}
+              name="alergias"
+              placeholder="Quais?"
+            />
           </>
 
           {/* Dermatológico */}
@@ -591,14 +1193,20 @@ const Ficha: React.FC = props => {
               />
             </RadioView>
             <InputFicha
+              value={tratamentoDermatologicoJustificativa}
+              onChangeText={settratamentoDermatologicoJustificativa}
               name="tratamento_dermatologico_justificacao"
               placeholder="Por quê?"
             />
             <InputFicha
+              value={tratamentoDermatologicoEmUso}
+              onChangeText={settratamentoDermatologicoEmUso}
               name="tratamento_dermatologico_em_uso"
               placeholder="Tratamento em uso (oral/tópico)"
             />
             <InputFicha
+              value={tratamentoDermatologicoTempo}
+              onChangeText={settratamentoDermatologicoTempo}
               name="tratamento_dermatologico_em_uso_tempo"
               placeholder="Há quanto tempo?"
             />
@@ -621,14 +1229,20 @@ const Ficha: React.FC = props => {
               />
             </RadioView>
             <InputFicha
+              value={tratamentoAnteriorJustivicativa}
+              onChangeText={setTratamentoAnteriorJustivicativa}
               name="tratamento_dermatologico_anterior_justificativa"
               placeholder="Por quê?"
             />
             <InputFicha
+              value={tratamentoAnteriorUsado}
+              onChangeText={setTratamentoAnteriorUsado}
               name="tratamento_dermatologico_anterior"
               placeholder="Tratamento usado (oral/tópico)"
             />
             <InputFicha
+              value={tratamentoAnteriorTempo}
+              onChangeText={setTratamentoAnteriorTempo}
               name="tratamento_dermatologico_anterior_tempo"
               placeholder="Há quanto tempo?"
             />
@@ -737,7 +1351,12 @@ const Ficha: React.FC = props => {
                 onPress={() => setAntidepressivo('N')}
               />
             </RadioView>
-            <InputFicha name="antidepressivos" placeholder="Quais?" />
+            <InputFicha
+              value={antidepressivos}
+              onChangeText={setAntidepressivos}
+              name="antidepressivos"
+              placeholder="Quais?"
+            />
             <RadioView>
               <RadioLabel>Sono</RadioLabel>
               <Picker
@@ -745,10 +1364,22 @@ const Ficha: React.FC = props => {
                 selectedValue={sono}
                 onValueChange={(itemValue, itemIndex) => setSono(itemValue)}
               >
-                <Picker.Item label="Bom" value="bom" />
-                <Picker.Item label="Regular" value="regular" />
-                <Picker.Item label="Ruim" value="ruim" />
-                <Picker.Item label="Insônia" value="insonia" />
+                {/* <FlatList
+                  keyExtractor={item => item.id}
+                  data={sonoLista}
+                  renderItem={({ item }: any) => (
+                    <Picker.Item label={item.descricao} value={item.id} />
+                  )}
+                /> */}
+                {sonoLista.map((item, i) => {
+                  return (
+                    <Picker.Item
+                      key={item.id}
+                      label={item.descricao}
+                      value={item.id}
+                    />
+                  );
+                })}
               </Picker>
             </RadioView>
             <RadioTitle>Usa remédios para dormir?</RadioTitle>
@@ -777,10 +1408,22 @@ const Ficha: React.FC = props => {
                   setSensibilidadeDor(itemValue)
                 }
               >
-                <Picker.Item label="Nenhuma" value="nenhuma" />
-                <Picker.Item label="Pouca" value="pouca" />
-                <Picker.Item label="Média" value="media" />
-                <Picker.Item label="Muita" value="muita" />
+                {/* <FlatList
+                  keyExtractor={item => item.id}
+                  data={sensibilidadeDorLista}
+                  renderItem={({ item }: any) => (
+                    <Picker.Item label={item.descricao} value={item.id} />
+                  )}
+                /> */}
+                {sensibilidadeDorLista.map((item, i) => {
+                  return (
+                    <Picker.Item
+                      key={item.id}
+                      label={item.descricao}
+                      value={item.id}
+                    />
+                  );
+                })}
               </Picker>
             </RadioView>
 
@@ -791,10 +1434,22 @@ const Ficha: React.FC = props => {
                 selectedValue={estresse}
                 onValueChange={(itemValue, itemIndex) => setEstresse(itemValue)}
               >
-                <Picker.Item label="Normal" value="normal" />
-                <Picker.Item label="Pouco" value="pouco" />
-                <Picker.Item label="Médio" value="medio" />
-                <Picker.Item label="Muito" value="muito" />
+                {/* <FlatList
+                  keyExtractor={item => item.id}
+                  data={estresseLista}
+                  renderItem={({ item }: any) => (
+                    <Picker.Item label={item.descricao} value={item.id} />
+                  )}
+                /> */}
+                {estresseLista.map((item, i) => {
+                  return (
+                    <Picker.Item
+                      key={item.id}
+                      label={item.descricao}
+                      value={item.id}
+                    />
+                  );
+                })}
               </Picker>
             </RadioView>
           </>
@@ -822,10 +1477,14 @@ const Ficha: React.FC = props => {
               />
             </RadioView>
             <InputFicha
+              value={enfermidadesAtuais}
+              onChangeText={setEnfermidadesAtuais}
               name="enfermidades_atuais"
               placeholder="Enfermidades atuais:"
             />
             <InputFicha
+              value={enfermidadesAnteriores}
+              onChangeText={setEnfermidadesAnteriores}
               name="enfermidades_anteriores"
               placeholder="Enfermidades anteriores:"
             />
@@ -1053,16 +1712,51 @@ const Ficha: React.FC = props => {
                   setAtividadesFisicas(itemValue)
                 }
               >
-                <Picker.Item label="Nenhuma" value="nenhuma" />
-                <Picker.Item label="Esporádica" value="esporadica" />
-                <Picker.Item label="Regular" value="regular" />
-                <Picker.Item label="Diária" value="diaria" />
+                {/* <FlatList
+                  keyExtractor={item => item.id}
+                  data={freqAtvFisicaLista}
+                  renderItem={({ item }: any) => (
+                    <Picker.Item label={item.descricao} value={item.id} />
+                  )}
+                /> */}
+                {freqAtvFisicaLista.map((item, i) => {
+                  return (
+                    <Picker.Item
+                      key={item.id}
+                      label={item.descricao}
+                      value={item.id}
+                    />
+                  );
+                })}
               </Picker>
             </RadioView>
-            <InputFicha name="atividades_fisicas" placeholder="Quais?" />
-            <InputFicha name="alimentacao" placeholder="Alimentação:" />
-            <InputFicha name="agua" placeholder="Água +- copos/dia:" />
             <InputFicha
+              value={quaisAtividades}
+              onChangeText={setQuaisAtividades}
+              name="atividades_fisicas"
+              placeholder="Quais?"
+            />
+            <InputFicha
+              value={alimentacao}
+              onChangeText={setAlimentacao}
+              name="alimentacao"
+              placeholder="Alimentação:"
+            />
+            <InputFicha
+              value={aguaQuantidade}
+              onChangeText={setAguaQuantidade}
+              name="agua"
+              placeholder="Quantidade de água"
+            />
+            <InputFicha
+              value={aguaCopos}
+              onChangeText={setAguaCopos}
+              name="copos"
+              placeholder="copos/dia"
+            />
+            <InputFicha
+              value={etilismo}
+              onChangeText={setEtilismo}
               name="bebida_alcoolica"
               placeholder="Bebida alcoólica:"
             />
@@ -1084,9 +1778,21 @@ const Ficha: React.FC = props => {
                 onPress={() => setFumante('N')}
               />
             </RadioView>
-            <InputFicha name="fumante_quantidade" placeholder="Quantos/dia" />
-            <InputFicha name="fumante_tempo" placeholder="Desde quando?" />
             <InputFicha
+              value={cigarrosDia}
+              onChangeText={setCigarrosDia}
+              name="fumante_quantidade"
+              placeholder="Quantos/dia"
+            />
+            <InputFicha
+              value={cigarrosInicio}
+              onChangeText={setCigarrosInicio}
+              name="fumante_tempo"
+              placeholder="Desde quando?"
+            />
+            <InputFicha
+              value={cigarrosFim}
+              onChangeText={setCigarrosFim}
               name="fumante_parada"
               placeholder="Parou a quanto tempo?"
             />
@@ -1096,21 +1802,24 @@ const Ficha: React.FC = props => {
               <RadioLabel>Regular</RadioLabel>
               <RadioButton
                 value="Regular"
-                status={
-                  funcaoIntestinal === 'Regular' ? 'checked' : 'unchecked'
-                }
-                onPress={() => setFuncaoIntestinal('Regular')}
+                status={funcaoIntestinal === 1 ? 'checked' : 'unchecked'}
+                onPress={() => setFuncaoIntestinal(1)}
               />
             </RadioView>
             <RadioView>
               <RadioLabel>Ruim</RadioLabel>
               <RadioButton
                 value="Ruim"
-                status={funcaoIntestinal === 'Ruim' ? 'checked' : 'unchecked'}
-                onPress={() => setFuncaoIntestinal('Ruim')}
+                status={funcaoIntestinal === 2 ? 'checked' : 'unchecked'}
+                onPress={() => setFuncaoIntestinal(2)}
               />
             </RadioView>
-            <InputFicha name="intestino_obs" placeholder="Observação:" />
+            <InputFicha
+              value={funcaoIntestinalObs}
+              onChangeText={setFuncaoIntestinalObs}
+              name="intestino_obs"
+              placeholder="Observação:"
+            />
           </>
 
           {/* Informações complementares */}
@@ -1118,7 +1827,11 @@ const Ficha: React.FC = props => {
             <Area>
               <AreaText>Informações complementares</AreaText>
             </Area>
-            <InputFicha name="info_complementar" />
+            <InputFicha
+              value={infoComplementar}
+              onChangeText={setInfoComplementar}
+              name="info_complementar"
+            />
           </>
 
           {/* Informações e avaliações estéticas */}
@@ -1126,6 +1839,42 @@ const Ficha: React.FC = props => {
             <Area>
               <AreaText>Informações e avaliações estéticas</AreaText>
             </Area>
+            <InputFicha
+              value={tratamentosAnteriores}
+              onChangeText={setTratamentosAnteriores}
+              name="tratamentos_anteriores"
+              placeholder="Tratamentos estéticos anteriores:"
+            />
+
+            <RadioTitle>Cirurgia plástica na face?</RadioTitle>
+            <RadioView>
+              <RadioLabel>Sim</RadioLabel>
+              <RadioButton
+                value="S"
+                status={cirurgiaPlastica === 'S' ? 'checked' : 'unchecked'}
+                onPress={() => setCirurgiaPlastica('S')}
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Não</RadioLabel>
+              <RadioButton
+                value="N"
+                status={cirurgiaPlastica === 'N' ? 'checked' : 'unchecked'}
+                onPress={() => setCirurgiaPlastica('N')}
+              />
+            </RadioView>
+            <InputFicha
+              value={cirurgiaPlasticaFace}
+              onChangeText={setCirurgiaPlasticaFace}
+              name="cirurgia_qual"
+              placeholder="Qual?"
+            />
+            <InputFicha
+              value={cirurgiaPlasticaFaceTempo}
+              onChangeText={setCirurgiaPlasticaFaceTempo}
+              name="cirurgia_tempo"
+              placeholder="Quanto tempo?"
+            />
           </>
 
           {/* Cuidados diarios com a pele - Uso de cosméticos */}
@@ -1135,6 +1884,89 @@ const Ficha: React.FC = props => {
                 Cuidados diarios com a pele - Uso de cosméticos
               </AreaText>
             </Area>
+            <InputFicha
+              value={limpeza}
+              onChangeText={setLimpeza}
+              name="limpeza"
+              placeholder="Limpeza:"
+            />
+            <InputFicha
+              value={esfoliacao}
+              onChangeText={setEsfoliacao}
+              name="esfoliacao"
+              placeholder="Esfoliação:"
+            />
+            <InputFicha
+              value={tonioficacao}
+              onChangeText={setTonioficacao}
+              name="tonificacao"
+              placeholder="Tonificação:"
+            />
+            <InputFicha
+              value={acidos}
+              onChangeText={setAcidos}
+              name="acidos"
+              placeholder="Ácidos:"
+            />
+            <InputFicha
+              value={hidratacao}
+              onChangeText={setHidratacao}
+              name="hidratacao"
+              placeholder="Hidratação:"
+            />
+            <InputFicha
+              value={tratamentosEspecificos}
+              onChangeText={setTratamentosEspecificos}
+              name="tratamentos_especificos"
+              placeholder="Tratamentos específicos:"
+            />
+            <InputFicha
+              value={fotoprotecao}
+              onChangeText={setFotoprotecao}
+              name="fotoprotecao"
+              placeholder="Fotoproteção:"
+            />
+            <RadioView>
+              <RadioLabel>
+                Exposição solar (praia/piscina/atividade ao ar livre) :
+              </RadioLabel>
+              <Picker
+                style={{ height: 40, width: 300 }}
+                selectedValue={exposicaoSolar}
+                onValueChange={(itemValue, itemIndex) =>
+                  setExposicaoSolar(itemValue)
+                }
+              >
+                {/* <FlatList
+                  keyExtractor={item => item.id}
+                  data={exposicaoSolarLista}
+                  renderItem={({ item }: any) => (
+                    <Picker.Item label={item.descricao} value={item.id} />
+                  )}
+                /> */}
+                {exposicaoSolarLista.map((item, i) => {
+                  return (
+                    <Picker.Item
+                      key={item.id}
+                      label={item.descricao}
+                      value={item.id}
+                    />
+                  );
+                })}
+              </Picker>
+            </RadioView>
+            <InputFicha
+              value={usoCosmeticos}
+              onChangeText={setusoCosmeticos}
+              name="maquiagem"
+              placeholder="Maquiagem:"
+            />
+            <InputFicha
+              value={usoCosmeticosSensibilidade}
+              onChangeText={setAlimentacao}
+              name="sensibilidade_cosmeticos"
+              placeholder="Já apresentou sensibilidade a cosméticos?"
+            />
           </>
 
           {/* Fototipo segundo a classificação de Fitzpatrick */}
@@ -1144,12 +1976,101 @@ const Ficha: React.FC = props => {
                 Fototipo segundo a classificação de Fitzpatrick
               </AreaText>
             </Area>
+
+            <RadioView>
+              <RadioLabel>
+                I - caucasiano - pele muito clara, sempre queima, nunca bronzeia
+              </RadioLabel>
+              <RadioButton
+                value="I"
+                status={fitzpatrick === 1 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(1)}
+              />
+            </RadioView>
+
+            <RadioView>
+              <RadioLabel>
+                II - Branco - Pele clara, sempre queima, algumas vezes bronzeia
+              </RadioLabel>
+              <RadioButton
+                value="II"
+                status={fitzpatrick === 2 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(2)}
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>
+                III - Moreno Claro - Pele menos clara, algumas vezes queima,
+                sempre bronzeia
+              </RadioLabel>
+              <RadioButton
+                value="III"
+                status={fitzpatrick === 3 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(3)}
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>
+                IV - Moreno - Pele morena clara, raramente queima, sempre
+                bronzeia
+              </RadioLabel>
+              <RadioButton
+                value="IV"
+                status={fitzpatrick === 4 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(4)}
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>
+                V - Mulato - Pele morena escura, nunca queima, sempre brozeia
+              </RadioLabel>
+              <RadioButton
+                value="V"
+                status={fitzpatrick === 5 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(5)}
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>
+                VI - Negro - Pele negra, nunca queima, sempre bronzeia
+              </RadioLabel>
+              <RadioButton
+                value="VI"
+                status={fitzpatrick === 6 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(6)}
+              />
+            </RadioView>
           </>
           {/* Etnia / Racial */}
           <>
             <Area>
               <AreaText>Etnia / Racial</AreaText>
             </Area>
+
+            <RadioView>
+              <Picker
+                style={{ height: 40, width: 300 }}
+                selectedValue={etnia}
+                onValueChange={(itemValue, itemIndex) => setEtnia(itemValue)}
+              >
+                {/* <FlatList
+                  keyExtractor={item => item.id}
+                  data={etniaLista}
+                  renderItem={({ item }: any) => (
+                    <Picker.Item label={item.descricao} value={item.id} />
+                  )}
+                /> */}
+                {etniaLista.map((item, i) => {
+                  return (
+                    <Picker.Item
+                      key={item.id}
+                      label={item.descricao}
+                      value={item.id}
+                    />
+                  );
+                })}
+              </Picker>
+            </RadioView>
           </>
 
           {/* Tipo de pele */}
@@ -1157,25 +2078,915 @@ const Ficha: React.FC = props => {
             <Area>
               <AreaText>Pele</AreaText>
             </Area>
+
+            <RadioView>
+              <RadioLabel>Tipo de pele :</RadioLabel>
+              <Picker
+                style={{ height: 40, width: 300 }}
+                selectedValue={tipoPele}
+                onValueChange={(itemValue, itemIndex) => setTipoPele(itemValue)}
+              >
+                {/* <FlatList
+                  keyExtractor={item => item.id}
+                  data={tipoPeleLista}
+                  renderItem={({ item }: any) => (
+                    <Picker.Item label={item.descricao} value={item.id} />
+                  )}
+                /> */}
+                {tipoPeleLista.map((item, i) => {
+                  return (
+                    <Picker.Item
+                      key={item.id}
+                      label={item.descricao}
+                      value={item.id}
+                    />
+                  );
+                })}
+              </Picker>
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Ao tato :</RadioLabel>
+              <Picker
+                style={{ height: 40, width: 300 }}
+                selectedValue={aoTato}
+                onValueChange={(itemValue, itemIndex) => setAoTato(itemValue)}
+              >
+                {/* <FlatList
+                  keyExtractor={item => item.id}
+                  data={peleAoTatoLista}
+                  renderItem={({ item }: any) => (
+                    <Picker.Item label={item.descricao} value={item.id} />
+                  )}
+                /> */}
+                {peleAoTatoLista.map((item, i) => {
+                  return (
+                    <Picker.Item
+                      key={item.id}
+                      label={item.descricao}
+                      value={item.id}
+                    />
+                  );
+                })}
+              </Picker>
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Sensibilidade :</RadioLabel>
+              <Picker
+                style={{ height: 40, width: 300 }}
+                selectedValue={sensibilidadePele}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSensibilidadePele(itemValue)
+                }
+              >
+                {/* <FlatList
+                  keyExtractor={item => item.id}
+                  data={peleSensibilidadeLista}
+                  renderItem={({ item }: any) => (
+                    <Picker.Item label={item.descricao} value={item.id} />
+                  )}
+                /> */}
+                {peleSensibilidadeLista.map((item, i) => {
+                  return (
+                    <Picker.Item
+                      key={item.id}
+                      label={item.descricao}
+                      value={item.id}
+                    />
+                  );
+                })}
+              </Picker>
+            </RadioView>
+            <InputFicha name="pele_obs" placeholder="Obs:" />
+
+            <RadioTitle>Acromias:</RadioTitle>
+            <RadioView>
+              <RadioLabel>Sim</RadioLabel>
+              <RadioButton
+                value="S"
+                status={acromias === 'S' ? 'checked' : 'unchecked'}
+                onPress={() => setAcromias('S')}
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Não</RadioLabel>
+              <RadioButton
+                value="N"
+                status={acromias === 'N' ? 'checked' : 'unchecked'}
+                onPress={() => setAcromias('N')}
+              />
+            </RadioView>
+            <RadioTitle>Hipocromias</RadioTitle>
+            <RadioView>
+              <RadioLabel>Sim</RadioLabel>
+              <RadioButton
+                value="S"
+                status={hipocromias === 'S' ? 'checked' : 'unchecked'}
+                onPress={() => setHipocromias('S')}
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Não</RadioLabel>
+              <RadioButton
+                value="N"
+                status={hipocromias === 'N' ? 'checked' : 'unchecked'}
+                onPress={() => setHipocromias('N')}
+              />
+            </RadioView>
+            <RadioTitle>Hipercromias:</RadioTitle>
+            <RadioView>
+              <RadioLabel>Efelides :</RadioLabel>
+
+              <RadioButton
+                value={efelides}
+                status={efelides === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  efelides === 'S' ? setEfelides('N') : setEfelides('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Melasmas :</RadioLabel>
+
+              <RadioButton
+                value={melasmas}
+                status={melasmas === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  melasmas === 'S' ? setMelasmas('N') : setMelasmas('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Lentigos :</RadioLabel>
+
+              <RadioButton
+                value={lentigos}
+                status={lentigos === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  lentigos === 'S' ? setLentigos('N') : setLentigos('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Melanose solar/senil :</RadioLabel>
+
+              <RadioButton
+                value={melanose}
+                status={melanose === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  melanose === 'S' ? setMelanose('N') : setMelanose('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Pós traumática :</RadioLabel>
+
+              <RadioButton
+                value={posTraumatica}
+                status={posTraumatica === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  posTraumatica === 'S'
+                    ? setPosTraumatica('N')
+                    : setPosTraumatica('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Pós inflamatória :</RadioLabel>
+
+              <RadioButton
+                value={posInflamatoria}
+                status={posInflamatoria === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  posInflamatoria === 'S'
+                    ? setPosInflamatoria('N')
+                    : setPosInflamatoria('S')
+                }
+              />
+            </RadioView>
           </>
 
+          {/* --------------- */}
+          <>
+            <Area />
+            <RadioView>
+              <RadioLabel>Xantelasmas :</RadioLabel>
+
+              <RadioButton
+                value={xantelasmas}
+                status={xantelasmas === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  xantelasmas === 'S'
+                    ? setXantelasmas('N')
+                    : setXantelasmas('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Hiperplasia sebácea :</RadioLabel>
+
+              <RadioButton
+                value={hiperplasiaSebacea}
+                status={hiperplasiaSebacea === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  hiperplasiaSebacea === 'S'
+                    ? setHiperplasiaSebacea('N')
+                    : setHiperplasiaSebacea('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Cicatrizes :</RadioLabel>
+
+              <RadioButton
+                value={cicatrizes}
+                status={cicatrizes === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  cicatrizes === 'S' ? setCicatrizes('N') : setCicatrizes('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Seborréia :</RadioLabel>
+
+              <RadioButton
+                value={seborreia}
+                status={seborreia === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  seborreia === 'S' ? setSeborreia('N') : setSeborreia('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Flacidez muscular :</RadioLabel>
+
+              <RadioButton
+                value={flacidesMuscular}
+                status={flacidesMuscular === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  flacidesMuscular === 'S'
+                    ? setFlacidesMuscular('N')
+                    : setFlacidesMuscular('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Comedões capilares :</RadioLabel>
+
+              <RadioButton
+                value={comedoesCapilares}
+                status={comedoesCapilares === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  comedoesCapilares === 'S'
+                    ? setComedoesCapilares('N')
+                    : setComedoesCapilares('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Eritemas :</RadioLabel>
+
+              <RadioButton
+                value={eritemas}
+                status={eritemas === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  eritemas === 'S' ? setEritemas('N') : setEritemas('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Verrugas :</RadioLabel>
+
+              <RadioButton
+                value={verrugas}
+                status={verrugas === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  verrugas === 'S' ? setVerrugas('N') : setVerrugas('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Queratose pilar/folicular :</RadioLabel>
+
+              <RadioButton
+                value={queratose}
+                status={queratose === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  queratose === 'S' ? setQueratose('N') : setQueratose('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Asfitica :</RadioLabel>
+
+              <RadioButton
+                value={asfitica}
+                status={asfitica === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  asfitica === 'S' ? setAsfitica('N') : setAsfitica('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Óstios dilatados :</RadioLabel>
+
+              <RadioButton
+                value={ostiosDilatados}
+                status={ostiosDilatados === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  ostiosDilatados === 'S'
+                    ? setOstiosDilatados('N')
+                    : setOstiosDilatados('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Flacidez tissular :</RadioLabel>
+
+              <RadioButton
+                value={flacidezTissular}
+                status={flacidezTissular === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  flacidezTissular === 'S'
+                    ? setFlacidezTissular('N')
+                    : setFlacidezTissular('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Micromedões :</RadioLabel>
+
+              <RadioButton
+                value={micromedoes}
+                status={micromedoes === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  micromedoes === 'S'
+                    ? setMicromedoes('N')
+                    : setMicromedoes('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Edemas :</RadioLabel>
+
+              <RadioButton
+                value={edemas}
+                status={edemas === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  edemas === 'S' ? setEdemas('N') : setEdemas('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Nevos (sinais/pintas) :</RadioLabel>
+
+              <RadioButton
+                value={nevos}
+                status={nevos === 'S' ? 'checked' : 'unchecked'}
+                onPress={() => (nevos === 'S' ? setNevos('N') : setNevos('S'))}
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Dermografismo :</RadioLabel>
+
+              <RadioButton
+                value={dermografismo}
+                status={dermografismo === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  dermografismo === 'S'
+                    ? setDermografismo('N')
+                    : setDermografismo('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Talangiectasias :</RadioLabel>
+
+              <RadioButton
+                value={talangiectasias}
+                status={talangiectasias === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  talangiectasias === 'S'
+                    ? setTalangiectasias('N')
+                    : setTalangiectasias('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Miliuns :</RadioLabel>
+
+              <RadioButton
+                value={miliuns}
+                status={miliuns === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  miliuns === 'S' ? setMiliuns('N') : setMiliuns('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Escoriações :</RadioLabel>
+
+              <RadioButton
+                value={escoriacoes}
+                status={escoriacoes === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  escoriacoes === 'S'
+                    ? setEscoriacoes('N')
+                    : setEscoriacoes('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Comedões abertos :</RadioLabel>
+
+              <RadioButton
+                value={comedoesAbertos}
+                status={comedoesAbertos === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  comedoesAbertos === 'S'
+                    ? setComedoesAbertos('N')
+                    : setComedoesAbertos('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Hematomas :</RadioLabel>
+
+              <RadioButton
+                value={hematomas}
+                status={hematomas === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  hematomas === 'S' ? setHematomas('N') : setHematomas('S')
+                }
+              />
+            </RadioView>
+          </>
           {/* Classificação segundo Glogau */}
           <>
             <Area>
               <AreaText>Classificação segundo Glogau</AreaText>
             </Area>
+
+            <RadioView>
+              <RadioLabel>Tipo I - sem rugas (20 - 30 anos)</RadioLabel>
+              <RadioButton
+                value="I"
+                status={fotoenvelhecimento === 1 ? 'checked' : 'unchecked'}
+                onPress={() => setFotoenvelhecimento(1)}
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>
+                Tipo II - rugas somente com os movimentos (30 - 40 anos)
+              </RadioLabel>
+              <RadioButton
+                value="II"
+                status={fotoenvelhecimento === 2 ? 'checked' : 'unchecked'}
+                onPress={() => setFotoenvelhecimento(2)}
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>
+                Tipo III - presença de rugas mesmo em repouso (40 - 50 anos)
+              </RadioLabel>
+              <RadioButton
+                value="III"
+                status={fotoenvelhecimento === 3 ? 'checked' : 'unchecked'}
+                onPress={() => setFotoenvelhecimento(3)}
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>
+                Tipo IV - apenas as rugas dominam todo o rosto (acima de 60
+                anos)
+              </RadioLabel>
+              <RadioButton
+                value="IV"
+                status={fotoenvelhecimento === 4 ? 'checked' : 'unchecked'}
+                onPress={() => setFotoenvelhecimento(4)}
+              />
+            </RadioView>
           </>
+
+          <InputFicha
+            value={verrugasFrontal}
+            onChangeText={setVerrugasFrontal}
+            name="frontal"
+            label="Frontal"
+            placeholder="Descrição"
+          />
+          <InputFicha
+            value={verrugasGlabela}
+            onChangeText={setVerrugasGlabela}
+            name="glabela"
+            label="Glabela"
+            placeholder="Descrição"
+          />
+          <InputFicha
+            value={verrugasOrbicularOlhos}
+            onChangeText={setVerrugasOrbicularOlhos}
+            name="orbicular_dos_olhos"
+            label="Orbicular dos Olhos"
+            placeholder="Descrição"
+          />
+          <InputFicha
+            value={verrugasOrbicularLabios}
+            onChangeText={setVerrugasOrbicularLabios}
+            name="orbicular_dos_labios"
+            label="Orbicular dos Lábios"
+            placeholder="Descrição"
+          />
+          <InputFicha
+            value={verrugasLateralFace}
+            onChangeText={setVerrugasLateralFace}
+            name="lateral_da_face"
+            label="Lateral da Face"
+            placeholder="Descrição"
+          />
+          <InputFicha
+            value={verrugasSulco}
+            onChangeText={setVerrugasSulco}
+            name="sulco_nasogeniano"
+            label="Sulco Nasogeniano"
+            placeholder="Descrição"
+          />
+          <InputFicha
+            value={verrugasPescoco}
+            onChangeText={setVerrugasPescoco}
+            name="pescoco"
+            label="Pescoço"
+            placeholder="Descrição"
+          />
+          <InputFicha
+            value={verrugasColo}
+            onChangeText={setVerrugasColo}
+            name="colo"
+            label="Colo"
+            placeholder="Descrição"
+          />
 
           {/* Acne */}
           <>
             <Area>
               <AreaText>Acne</AreaText>
             </Area>
+
+            {/* <RadioView>
+              <RadioLabel>Comedões capilares :</RadioLabel>
+
+              <RadioButton
+                value={comedoesCapilaresAcne}
+                status={comedoesCapilaresAcne === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  comedoesCapilaresAcne === 'S'
+                    ? setComedoesCapilaresAcne('N')
+                    : setComedoesCapilaresAcne('S')
+                }
+              />
+            </RadioView>
+            {/* <RadioView>
+              <RadioLabel>Micromedões :</RadioLabel>
+
+              <RadioButton
+                value={micromedoesAcne}
+                status={micromedoesAcne === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  micromedoesAcne === 'S'
+                    ? setMicromedoesAcne('N')
+                    : setMicromedoesAcne('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Comedões abertos :</RadioLabel>
+
+              <RadioButton
+                value={comedoesAbertosAcne}
+                status={comedoesAbertosAcne === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  comedoesAbertosAcne === 'S'
+                    ? setComedoesAbertosAcne('N')
+                    : setComedoesAbertosAcne('S')
+                }
+              />
+            </RadioView> */}
+            <RadioView>
+              <RadioLabel>Comedões fechados :</RadioLabel>
+
+              <RadioButton
+                value={comedoesFechadosAcne}
+                status={comedoesFechadosAcne === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  comedoesFechadosAcne === 'S'
+                    ? setComedoesFechadosAcne('N')
+                    : setComedoesFechadosAcne('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Pústulas :</RadioLabel>
+
+              <RadioButton
+                value={pustulas}
+                status={pustulas === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  pustulas === 'S' ? setPustulas('N') : setPustulas('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Pápulas :</RadioLabel>
+
+              <RadioButton
+                value={papulas}
+                status={papulas === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  papulas === 'S' ? setPapulas('N') : setPapulas('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Nódulos :</RadioLabel>
+
+              <RadioButton
+                value={nodulos}
+                status={nodulos === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  nodulos === 'S' ? setNodulos('N') : setNodulos('S')
+                }
+              />
+            </RadioView>
+            {/*
+            <RadioView>
+              <RadioLabel>Escoriações :</RadioLabel>
+
+              <RadioButton
+                value={escoriacoesAcne}
+                status={escoriacoesAcne === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  escoriacoesAcne === 'S'
+                    ? setEscoriacoesAcne('N')
+                    : setEscoriacoesAcne('S')
+                }
+              />
+            </RadioView> */}
+
+            <RadioView>
+              <Picker
+                style={{ height: 40, width: 300 }}
+                selectedValue={grauAcne}
+                onValueChange={(itemValue, itemIndex) => setGrauAcne(itemValue)}
+              >
+                {/* <FlatList
+                  keyExtractor={item => item.id}
+                  data={grausAcneLista}
+                  renderItem={({ item }: any) => (
+                    <Picker.Item label={item.descricao} value={item.id} />
+                  )}
+                /> */}
+                {grausAcneLista.map((item, i) => {
+                  return (
+                    <Picker.Item
+                      key={item.id}
+                      label={item.descricao}
+                      value={item.id}
+                    />
+                  );
+                })}
+              </Picker>
+            </RadioView>
+
+            <RadioView>
+              <RadioLabel>Juvenil/Vulgar :</RadioLabel>
+
+              <RadioButton
+                value={juvenilVulgar}
+                status={juvenilVulgar === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  juvenilVulgar === 'S'
+                    ? setJuvenilVulgar('N')
+                    : setJuvenilVulgar('S')
+                }
+              />
+            </RadioView>
+            <RadioView>
+              <RadioLabel>Tardia :</RadioLabel>
+
+              <RadioButton
+                value={tardia}
+                status={tardia === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  tardia === 'S' ? setTardia('N') : setTardia('S')
+                }
+              />
+            </RadioView>
+
+            <RadioView>
+              <RadioLabel>Acne na familia?</RadioLabel>
+
+              <RadioButton
+                value={acneFamilia}
+                status={acneFamilia === 'S' ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  acneFamilia === 'S'
+                    ? setAcneFamilia('N')
+                    : setAcneFamilia('S')
+                }
+              />
+            </RadioView>
+            <InputFicha
+              value={acneInicio}
+              onChangeText={setAcneInicio}
+              name="acne_inicio"
+              label="Inicio"
+            />
+            <InputFicha
+              value={acneEvolucao}
+              onChangeText={setAcneEvolucao}
+              name="acne_evolucao"
+              label="Evolução"
+            />
+          </>
+
+          {/* Outras considerações */}
+          <>
+            <Area>
+              <AreaText>Outras considerações</AreaText>
+            </Area>
+            <InputFicha
+              value={outrasConsideracoes}
+              onChangeText={setOutrasConsideracoes}
+              name="outas_consideracoes"
+              placeholder="Outras considerações"
+            />
           </>
           {/* AQUIIIIIIIIIIIIIIIIIIIIII */}
           <Button
             onPress={() => {
-              props.navigation.navigate('Consulta');
+              const ficha: CadastroFicha = {
+                queixaPrincipal,
+                ginecologistaUltimaConsulta: ultimaConsulta,
+                cicloMenstrualNormal,
+                alteracoesCicloMenstrual,
+                primeiraMenstruacao,
+                ultimaMenstruacao,
+                sop,
+                climaterio,
+                menopausa,
+                reposicaoHormonal,
+                gestante,
+                mesesGestacao,
+                quantidadeGravidez: nroGravidez,
+                quantidadeFilhos: nroFilhos,
+                idadesFilhos: idadeFilhos,
+                seiosNormais: seios,
+                seiosAlteracoes,
+                contraceptivosHormonais: contraceptivos,
+                contraceptivosHormonaisTempo: contraceptivosTempo,
+                hirsutismo,
+                hirsutismoRepentino,
+                hirsutismoIdade,
+                diabetes,
+                tireoide,
+                marcaPasso,
+                cardiacoObservacoes,
+                hipotensao,
+                hipertensao,
+                alergias,
+                tratamentoDermatologico,
+                tratamentoDermatologicoJustificativa,
+                tratamentoDermatologicoEmUso,
+                tratamentoDermatologicoEmUsoTempo: tratamentoDermatologicoTempo,
+                tratamentoDermatologicoAnterior: tratamentoAnterior,
+                tratamentoDermatologicoAnteriorJustificativa: tratamentoAnteriorJustivicativa,
+                tratamentoDermatologicoAnteriorUsado: tratamentoAnteriorUsado,
+                tratamentoDermatologicoAnteriorTempo: tratamentoAnteriorTempo,
+                ansiedade,
+                impaciencia,
+                depressao,
+                choqueEmocional,
+                usaAntidepressivos: antidepressivo,
+                antidepressivos,
+                sonoId: sono,
+                usaRemediosParaDormir: remedioDormir,
+                sensibilidadeADorId: sensibilidadeDor,
+                estresseId: estresse,
+                checkupsMedicosRegularmente: checkups,
+                enfermidadesAtuais,
+                enfermidadesAnteriores,
+                medicamentosDores: dores,
+                medicamentosEpilepsia: epilepsia,
+                medicamentosAntecedentesOncologicos: antecedentesOncologicos,
+                medicamentosRetencaoHidrica: retencaoHidrica,
+                medicamentosRosacea: rosacea,
+                medicamentosLentesDeContato: lentesDeContato,
+                medicamentosTonturas: tonturas,
+                medicamentosProblemasRenais: problemasRenais,
+                medicamentosLupus: lupus,
+                medicamentosQueloides: queloides,
+                medicamentosImplanteDentario: implanteDentario,
+                medicamentosFaltaDeAr: faltaDeAr,
+                medicamentosUsoDeCorticoides: usoDeCorticoides,
+                medicamentosPsoriase: psoriase,
+                medicamentosDermatiteSeborreica: dermatiteSeborreica,
+                medicamentosPlacasMetalicasFace: placasMetalicasNaFace,
+                frequenciaAtividadesFisicasId: atividadesFisicas,
+                atividadesFisicas: quaisAtividades,
+                alimentacao,
+                aguaQuantidade,
+                aguaCopos,
+                etilismo,
+                fumante,
+                cigarrosDia,
+                fumanteInicio: cigarrosInicio,
+                fumanteFim: cigarrosFim,
+                funcaoIntestinalId: funcaoIntestinal,
+                funcaoIntestinalObs,
+                informacoesComplementares: infoComplementar,
+                tratamentosEsteticosAnteriores: tratamentosAnteriores,
+                cirurgiaPlasticaFace,
+                cirurgiaPlasticaFaceTempo,
+                usoDeCosmeticosLimpeza: limpeza,
+                usoDeCosmeticosEsfoliacao: esfoliacao,
+                usoDeCosmeticosTonificacao: tonioficacao,
+                usoDeCosmeticosAcidos: acidos,
+                usoDeCosmeticosHidratacao: hidratacao,
+                usoDeCosmeticosTratamentosEspecificos: tratamentosEspecificos,
+                usoDeCosmeticosFotoprotecao: fotoprotecao,
+                exposicaoSolarId: exposicaoSolar,
+                usoDeCosmeticosMaquiagem: usoCosmeticos,
+                cosmeticosSensibilidade: usoCosmeticosSensibilidade,
+                fototipoId: fitzpatrick,
+                etniaId: etnia,
+                tipoPeleId: tipoPele,
+                peleAoTatoId: aoTato,
+                peleSensibilidadeId: sensibilidadePele,
+                peleSensibilidadeObservacao: sensibilidadePeleObs,
+                acromias,
+                hipocromias,
+                efelides,
+                melasmas,
+                lentigos,
+                melanose,
+                hipercromiaPosTraumatica: posTraumatica,
+                hipercromiaPosInflamatoria: posInflamatoria,
+                xantelasmas,
+                hiperplasiaSebacea,
+                cicatrizes,
+                seborreia,
+                flacidezMuscular: flacidesMuscular,
+                comedoesCapilares,
+                eritemas,
+                verrugas,
+                queratosePilarFolicular: queratose,
+                asfitica,
+                ostiosDilatados,
+                flacidezTissular,
+                microcomedoes: micromedoes,
+                edemas,
+                nevos,
+                dermografismo,
+                talangiectasias,
+                miliuns,
+                escoriacoes,
+                comedoesAbertos,
+                hematomas,
+                fotoenvelhecimentoId: fotoenvelhecimento,
+                verrugasFrontal,
+                verrugasGlabela,
+                verrugasOrbicularOlhos,
+                verrugasOrbicularLabios,
+                verrugasLateralFace,
+                verrugasSulcoNasogeniano: verrugasSulco,
+                verrugasPescoco,
+                verrugasColo,
+                pustulas,
+                nodulos,
+                comedoesFechados: comedoesFechadosAcne,
+                papulas,
+                acneGrauId: grauAcne,
+                acneJuvenilVulgar: juvenilVulgar,
+                acneTardia: tardia,
+                acneFamilia,
+                acneInicio,
+                acneEvolucao,
+                outrasConsideracoes,
+                assinaturaCliente: assinatura,
+                imagemRosto,
+                ativo: 'S',
+                clienteId: cliente,
+              };
+
+              if (cliente === 0) {
+                // erro sem cliente
+              } else {
+                api.post('record', JSON.stringify(ficha), {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                  },
+                });
+                props.navigation.navigate('ListFichas', { token });
+              }
             }}
           >
             Cadastrar
@@ -1186,4 +2997,4 @@ const Ficha: React.FC = props => {
   );
 };
 
-export default Ficha;
+export default EditFicha;

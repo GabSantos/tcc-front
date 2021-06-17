@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { ScrollView } from 'react-native';
 import Input from '../../components/Input';
@@ -14,8 +14,26 @@ import {
   CadButton,
   TextContainer,
 } from './styles';
+import api from '../../services/api';
 
 const SignIn: React.FC = props => {
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+
+  const handleSignIn = () => {
+    api
+      .get('/user/login', {
+        params: {
+          email,
+          senha,
+        },
+      })
+      .then(resp => {
+        props.navigation.navigate('ListFichas', { token: resp.data.token });
+      })
+      .catch(e => console.log(e));
+  };
+
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
@@ -24,15 +42,22 @@ const SignIn: React.FC = props => {
       <Container source={Login}>
         <LogoText>Ficha Facial Digital</LogoText>
         <Form>
-          <Input name="email" icon="mail" placeholder="E-mail" />
-          <Input name="password" icon="lock" placeholder="Senha" />
-          <Button
-            onPress={() => {
-              props.navigation.navigate('ListFichas');
-            }}
-          >
-            Entrar
-          </Button>
+          <Input
+            name="email"
+            icon="mail"
+            placeholder="E-mail"
+            onChangeText={setEmail}
+            value={email}
+          />
+          <Input
+            name="password"
+            icon="lock"
+            placeholder="Senha"
+            onChangeText={setSenha}
+            value={senha}
+            secureTextEntry
+          />
+          <Button onPress={handleSignIn}>Entrar</Button>
         </Form>
         <CadButton
           onPress={() => {

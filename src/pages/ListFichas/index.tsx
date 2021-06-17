@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { ScrollView, Text } from 'react-native';
+import { FlatList, ScrollView } from 'react-native';
+
+import api from '../../services/api';
 
 import {
   Card,
@@ -17,7 +19,61 @@ import {
 
 import rosto from '../../assets/frontal.png';
 
+interface Ficha {
+  id: number;
+  data: Date;
+  imagemRosto: string;
+  consultas: [
+    {
+      tratamentos: string;
+      observacoes: string;
+      orientacoes: string;
+    },
+  ];
+  cliente: string;
+}
+
 const ListFichas: React.FC = props => {
+  const { token } = props.route.params;
+  const [fichas, setFichas] = useState([]);
+
+  api
+    .get('record', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then(resp => {
+      setFichas(resp.data);
+    })
+    .catch(e => console.log(e));
+
+  const render = (item: any) => {
+    if (item.cliente !== null) {
+      return (
+        <Card
+          key={item.id}
+          onPress={() => {
+            /* props.navigation.navigate('Ficha', {
+              token,
+              id_ficha: item.id,
+            }); */
+          }}
+        >
+          <CardTextContainer>
+            <Nome>{`${item.cliente.nome}`}</Nome>
+            <Queixa>{`${item.consultas[0].tratamentos} ${item.consultas[0].observacoes} ${item.consultas[0].orientacoes}`}</Queixa>
+            <Data>{`${item.data.slice(0, -19)}`}</Data>
+          </CardTextContainer>
+          <CardImage
+            style={{ resizeMode: 'contain' }}
+            source={{ uri: item.imagem_rosto }}
+          />
+        </Card>
+      );
+    }
+  };
+
   return (
     <Container>
       <ScrollView
@@ -26,88 +82,14 @@ const ListFichas: React.FC = props => {
       >
         <Container>
           {/* uma ficha */}
-          <Card
-            onPress={() => {
-              props.navigation.navigate('Ficha');
-            }}
-          >
-            <CardTextContainer>
-              <Nome>Gabriel Araujo Gomes dos Santos</Nome>
-              <Queixa>Queixas principais</Queixa>
-              <Data>Data ultima edição</Data>
-            </CardTextContainer>
-            <CardImage style={{ resizeMode: 'contain' }} source={rosto} />
-          </Card>
 
-          {/* uma ficha */}
-          <Card
-            onPress={() => {
-              props.navigation.navigate('Ficha');
-            }}
-          >
-            <CardTextContainer>
-              <Nome>Gabriel Araujo Gomes dos Santos</Nome>
-              <Queixa>Queixas principais</Queixa>
-              <Data>Data ultima edição</Data>
-            </CardTextContainer>
-            <CardImage style={{ resizeMode: 'contain' }} source={rosto} />
-          </Card>
+          {/* <FlatList
+            keyExtractor={item => item.id}
+            data={fichas}
+            renderItem={render}
+          /> */}
 
-          {/* uma ficha */}
-          <Card
-            onPress={() => {
-              props.navigation.navigate('Ficha');
-            }}
-          >
-            <CardTextContainer>
-              <Nome>Gabriel Araujo Gomes dos Santos</Nome>
-              <Queixa>Queixas principais</Queixa>
-              <Data>Data ultima edição</Data>
-            </CardTextContainer>
-            <CardImage style={{ resizeMode: 'contain' }} source={rosto} />
-          </Card>
-
-          {/* uma ficha */}
-          <Card
-            onPress={() => {
-              props.navigation.navigate('Ficha');
-            }}
-          >
-            <CardTextContainer>
-              <Nome>Gabriel Araujo Gomes dos Santos</Nome>
-              <Queixa>Queixas principais</Queixa>
-              <Data>Data ultima edição</Data>
-            </CardTextContainer>
-            <CardImage style={{ resizeMode: 'contain' }} source={rosto} />
-          </Card>
-
-          {/* uma ficha */}
-          <Card
-            onPress={() => {
-              props.navigation.navigate('Ficha');
-            }}
-          >
-            <CardTextContainer>
-              <Nome>Gabriel Araujo Gomes dos Santos</Nome>
-              <Queixa>Queixas principais</Queixa>
-              <Data>Data ultima edição</Data>
-            </CardTextContainer>
-            <CardImage style={{ resizeMode: 'contain' }} source={rosto} />
-          </Card>
-
-          {/* uma ficha */}
-          <Card
-            onPress={() => {
-              props.navigation.navigate('Ficha');
-            }}
-          >
-            <CardTextContainer>
-              <Nome>Gabriel Araujo Gomes dos Santos</Nome>
-              <Queixa>Queixas principais</Queixa>
-              <Data>Data ultima edição</Data>
-            </CardTextContainer>
-            <CardImage style={{ resizeMode: 'contain' }} source={rosto} />
-          </Card>
+          {fichas.map(render)}
 
           {/* fim fichas */}
         </Container>
@@ -115,21 +97,21 @@ const ListFichas: React.FC = props => {
       <Footer>
         <FotButton
           onPress={() => {
-            props.navigation.navigate('EditUsuario');
+            props.navigation.navigate('EditUsuario', { token });
           }}
         >
           <FotText>Perfil</FotText>
         </FotButton>
         <FotButton
           onPress={() => {
-            props.navigation.navigate('CadCliente');
+            props.navigation.navigate('CadCliente', { token });
           }}
         >
           <FotText>Novo cliente</FotText>
         </FotButton>
         <FotButton
           onPress={() => {
-            props.navigation.navigate('CadFicha');
+            // props.navigation.navigate('CadFicha', { token });
           }}
         >
           <FotText>Nova ficha</FotText>
