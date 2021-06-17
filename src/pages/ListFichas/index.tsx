@@ -36,17 +36,18 @@ interface Ficha {
 const ListFichas: React.FC = props => {
   const { token } = props.route.params;
   const [fichas, setFichas] = useState([]);
-
-  api
-    .get('record', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then(resp => {
-      setFichas(resp.data);
-    })
-    .catch(e => console.log(e));
+  useEffect(() => {
+    api
+      .get('record', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(resp => {
+        setFichas(resp.data);
+      })
+      .catch(e => console.log(e));
+  }, []);
 
   const render = (item: any) => {
     if (item.cliente !== null) {
@@ -54,10 +55,11 @@ const ListFichas: React.FC = props => {
         <Card
           key={item.id}
           onPress={() => {
-            /* props.navigation.navigate('Ficha', {
+            props.navigation.navigate('Ficha', {
               token,
-              id_ficha: item.id,
-            }); */
+              fichaId: item.id,
+              imageUrl: item.imagem_rosto,
+            });
           }}
         >
           <CardTextContainer>

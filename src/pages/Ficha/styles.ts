@@ -12,7 +12,8 @@ export const Container = styled.View`
 
 export const Form = styled.View`
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
+  margin-top: 50px;
   width: 300px;
 `;
 
@@ -62,4 +63,9 @@ export const Icon = styled(Feather)``;
 export const Exit = styled(TouchableOpacity)`
   margin-top: 24px;
   margin-right: 80%;
+`;
+
+export const CardImage = styled.Image`
+  height: 300px;
+  width: 100%;
 `;

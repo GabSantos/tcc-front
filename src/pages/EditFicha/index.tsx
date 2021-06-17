@@ -8,8 +8,6 @@ import InputFicha from '../../components/InputFicha';
 import Button from '../../components/Button';
 import DatePicker from '../../components/DatePicker';
 
-import imagem from '../../assets/frontal.png';
-
 import {
   Area,
   AreaText,
@@ -179,7 +177,7 @@ interface CadastroFicha {
 }
 
 const EditFicha: React.FC = props => {
-  const { token } = props.route.params;
+  const { token, fichaId } = props.route.params;
 
   const [queixaPrincipal, setQueixaPrincipal] = useState('');
 
@@ -391,11 +389,10 @@ const EditFicha: React.FC = props => {
   const [acneEvolucao, setAcneEvolucao] = useState('');
   const [outrasConsideracoes, setOutrasConsideracoes] = useState('');
 
-  const assinatura = imagem;
-  const imagemRosto = imagem;
-
-  const ativo = 'S';
   const [cliente, setCliente] = useState(0);
+  const [assinatura, setAssinatura] = useState(null);
+  const [imagem, setImagem] = useState(null);
+  const [ativo, setAtivo] = useState('S');
 
   // #region  date picker Ultima Consulta
   const [ultimaConsultaText, setUltimaConsultaText] = useState('');
@@ -468,17 +465,7 @@ const EditFicha: React.FC = props => {
   const [sensibilidadeDorLista, setSensibilidadeDorLista] = useState([]);
   const [sonoLista, setSonoLista] = useState([]);
   const [tipoPeleLista, setTipoPeleLista] = useState([]);
-
-  api
-    .get('client', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then(resp => {
-      setClientesLista(resp.data);
-    })
-    .catch(e => console.log(e));
+  const [data, setData] = useState(new Date());
 
   api
     .get('aux', {
@@ -503,6 +490,190 @@ const EditFicha: React.FC = props => {
     })
     .catch(e => console.log(e));
 
+  api
+    .get(`record/${fichaId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then(resp => {
+      setQueixaPrincipal(resp.data.queixa_principal);
+      setUltimaConsulta(resp.data.ginecologista_ultima_consulta || new Date());
+      setCicloMenstrualNormal(resp.data.ciclo_menstrual_normal);
+      setAlteracoesCicloMenstrual(resp.data.ciclo_menstrual_normal || 'S');
+      setPrimeiraMenstruacao(resp.data.primeira_menstruacao || new Date());
+      setUltimaMenstruacao(resp.data.ultima_menstruacao || new Date());
+      setSop(resp.data.sop);
+      setClimaterio(resp.data.climaterio);
+      setMenopausa(resp.data.menopausa);
+      setReposicaoHormonal(resp.data.reposicao_hormonal);
+      setGestante(resp.data.gestante);
+      setMesesGestacao(resp.data.meses_gestacao || 0);
+      setNroGravidez(resp.data.quantidade_gravidez || 0);
+      setNroFilhos(resp.data.quantidade_filhos || 0);
+      setIdadeFilhos(resp.data.idades_filhos || '');
+      setSeios(resp.data.seios_normais || 'S');
+      setSeiosAlteracoes(resp.data.seios_alteracoes || '');
+      setContraceptivos(resp.data.contraceptivos_hormonais || 'N');
+      setContraceptivosTempo(resp.data.contraceptivos_hormonais_tempo || '');
+      setHirsutismo(resp.data.hirsutismo || 'N');
+      setHirsutismoRepentino(resp.data.hirsutismo_repentino || 'N');
+      setHirsutismoIdade(resp.data.hirsutismo_idade || '');
+      setDiabetes(resp.data.diabetes || 'N');
+      setTireoide(resp.data.tireoide || 'N');
+      setMarcaPasso(resp.data.marca_passo || 'N');
+      setCardiacoObservacoes(resp.data.cardiaco_observacoes || '');
+      setHipotensao(resp.data.hipotensao || 'N');
+      setHipertensao(resp.data.hipertensao || 'N');
+      setAlergias(resp.data.alergias || '');
+      setTratamentoDermatologico(resp.data.tratamento_dermatologico || 'N');
+
+      settratamentoDermatologicoJustificativa(
+        resp.data.tratamento_dermatologico_justificativa || '',
+      );
+      settratamentoDermatologicoEmUso(
+        resp.data.tratamento_dermatologico_em_uso || '',
+      );
+      settratamentoDermatologicoTempo(
+        resp.data.tratamento_dermatologico_em_uso_tempo || '',
+      );
+      setTratamentoAnterior(resp.data.tratamento_dermatologico_anterior || 'N');
+
+      setTratamentoAnteriorJustivicativa(
+        resp.data.tratamento_anterior_justificativa || '',
+      );
+      setTratamentoAnteriorUsado(resp.data.tratamento_anterior_usado || '');
+      setTratamentoAnteriorTempo(resp.data.tratamento_anterior_tempo || '');
+      setAnsiedade(resp.data.ansiedade || 'N');
+      setImpaciencia(resp.data.impaciencia || 'N');
+      setDepressao(resp.data.depressao || 'N');
+      setChoqueEmocional(resp.data.choque_emocional || 'N');
+      setAntidepressivo(resp.data.usa_antidepressivos || 'N');
+      setAntidepressivos(resp.data.antidepressivos || '');
+      setSono(resp.data.sono_id || 1);
+      setRemedioDormir(resp.data.usa_remedios_para_dormir || 'N');
+      setSensibilidadeDor(resp.data.sensibilidade_a_dor || 1);
+      setEstresse(resp.data.estresse_id || 1);
+      setCheckups(resp.data.checkups_medicos_regularmente || 'N');
+      setEnfermidadesAtuais(resp.data.enfermidades_atuais || '');
+      setEnfermidadesAnteriores(resp.data.enfermidades_anteriores || '');
+      setDores(resp.data.medicamentos_dores || 'N');
+      setEpilepsia(resp.data.medicamentos_epilepsia || 'N');
+      setAntecedentesOncologicos(
+        resp.data.medicamentos_antecedentes_oncologicos || 'N',
+      );
+      setRetencaoHidrica(resp.data.medicamentos_retencao_hidrica || 'N');
+      setRosacea(resp.data.medicamentos_rosacea || 'N');
+      setLentesDeContato(resp.data.medicamentos_lentes_de_contato || 'N');
+      setTonturas(resp.data.medicamentos_tonturas || 'N');
+      setProblemasRenais(resp.data.medicamentos_problemas_renais || 'N');
+      setLupus(resp.data.medicamentos_lupus || 'N');
+      setQueloides(resp.data.medicamentos_queloides || 'N');
+      setImplanteDentario(resp.data.medicamentos_implante_dentario || 'N');
+      setFaltaDeAr(resp.data.medicamentos_falta_de_ar || 'N');
+      setUsoDeCorticoides(resp.data.medicamentos_uso_de_corticoides || 'N');
+      setPsoriase(resp.data.medicamentos_psoriase || 'N');
+      setDermatiteSeborreica(
+        resp.data.medicamentos_dermatite_seborreica || 'N',
+      );
+      setPlacasMetalicasNaFace(
+        resp.data.medicamentos_placas_metalicas_face || 'N',
+      );
+      setAtividadesFisicas(resp.data.frequencia_atividades_fisicas_id || 1);
+      setQuaisAtividades(resp.data.atividades_fisicas || '');
+      setAlimentacao(resp.data.alimentacao || '');
+      setAguaQuantidade(resp.data.agua_quantidade || '');
+      setAguaCopos(resp.data.agua_copos || '');
+      setEtilismo(resp.data.eitilismo || '');
+      setFumante(resp.data.fumante || 'N');
+      setCigarrosDia(resp.data.cigarros_dia || '');
+      setCigarrosInicio(resp.data.fumante_inicio || '');
+      setCigarrosFim(resp.data.fumante_fim || '');
+      setFuncaoIntestinal(resp.data.funcao_intestinal_id || 1);
+      setFuncaoIntestinalObs(resp.data.funcao_intestinal_obs || '');
+      setInfoComplementar(resp.data.informacoes_complementares || '');
+      setTratamentosAnteriores(
+        resp.data.tratamentos_esteticos_anteriores || '',
+      );
+      // setCirurgiaPlastica(resp.data.||'N');
+      setCirurgiaPlasticaFace(resp.data.cirurgia_plastica_face || '');
+      setCirurgiaPlasticaFaceTempo(
+        resp.data.cirurgia_plastica_face_tempo || '',
+      );
+      setLimpeza(resp.data.uso_de_cosmeticos_limpeza || '');
+      setEsfoliacao(resp.data.uso_de_cosmeticos_esfoliacao || '');
+      setTonioficacao(resp.data.uso_de_cosmeticos_tonificacao || '');
+      setAcidos(resp.data.uso_de_cosmeticos_acidos || '');
+      setHidratacao(resp.data.uso_de_cosmeticos_hidratacao || '');
+      setTratamentosEspecificos(
+        resp.data.uso_de_cosmeticos_tratamentos_especificos || '',
+      );
+      setFotoprotecao(resp.data.uso_de_cosmeticos_fotoprotecao || '');
+      setExposicaoSolar(resp.data.exposicao_solar_id || 1);
+      setusoCosmeticos(resp.data.uso_de_cosmeticos_maquiagem || '');
+      setusoCosmeticosSensibilidade(resp.data.cosmeticos_sensibilidade || '');
+      setFitzpatrick(resp.data.fototipo_id || 1);
+      setEtnia(resp.data.etnia_id || 1);
+      setTipoPele(resp.data.tipo_pele_id || 1);
+      setAoTato(resp.data.pele_ao_tato_id || 1);
+      setSensibilidadePele(resp.data.pele_sensibilidade_id || 1);
+      setSensibilidadePeleObs(resp.data.pele_sensibilidade_observacao || '');
+      setAcromias(resp.data.acromias || 'N');
+      setHipocromias(resp.data.hipocromias || 'N');
+      setEfelides(resp.data.efelides || 'N');
+      setMelasmas(resp.data.melasmas || 'N');
+      setLentigos(resp.data.lentigos || 'N');
+      setMelanose(resp.data.melanose || 'N');
+      setPosTraumatica(resp.data.hipercromia_pos_traumatica || 'N');
+      setPosInflamatoria(resp.data.hipercromia_pos_inflamatoria || 'N');
+      setXantelasmas(resp.data.xantelasmas || 'N');
+      setHiperplasiaSebacea(resp.data.hiperblasia_sebacea || 'N');
+      setCicatrizes(resp.data.cicatrizes || 'N');
+      setSeborreia(resp.data.seborreia || 'N');
+      setFlacidesMuscular(resp.data.flacidez_muscular || 'N');
+      setComedoesCapilares(resp.data.comedoes_capilares || 'N');
+      setEritemas(resp.data.eritemas || 'N');
+      setVerrugas(resp.data.verrugas || 'N');
+      setQueratose(resp.data.queratose_pilar_folicular || 'N');
+      setAsfitica(resp.data.asfitica || 'N');
+      setOstiosDilatados(resp.data.ostios_dilatados || 'N');
+      setFlacidezTissular(resp.data.flacidez_tissular || 'N');
+      setMicromedoes(resp.data.microcomedoes || 'N');
+      setEdemas(resp.data.edemas || 'N');
+      setNevos(resp.data.nevos || 'N');
+      setDermografismo(resp.data.dermografismo || 'N');
+      setTalangiectasias(resp.data.talangiectasias || 'N');
+      setMiliuns(resp.data.miliuns || 'N');
+      setEscoriacoes(resp.data.escoriacoes || 'N');
+      setComedoesAbertos(resp.data.comedoes_abertos || 'N');
+      setHematomas(resp.data.hematomas || 'N');
+      setFotoenvelhecimento(resp.data.fotoenvelhecimento_id || 1);
+      setVerrugasFrontal(resp.data.verrugas_frontal || '');
+      setVerrugasGlabela(resp.data.verrugas_glabela || '');
+      setVerrugasOrbicularOlhos(resp.data.verrugas_orbicular_olhos || '');
+      setVerrugasOrbicularLabios(resp.data.verrugas_orbicular_labios || '');
+      setVerrugasLateralFace(resp.data.verrugas_lateral_face || '');
+      setVerrugasSulco(resp.data.verrugas_sulco || '');
+      setVerrugasPescoco(resp.data.verrugas_pescoco || '');
+      setVerrugasColo(resp.data.verrugas_colo || '');
+      setPustulas(resp.data.pustulas || 'N');
+      setNodulos(resp.data.nodulos || 'N');
+      setComedoesFechadosAcne(resp.data.comedoes_fechados || 'N');
+      setPapulas(resp.data.papulas || 'N');
+      setGrauAcne(resp.data.acne_grau_id || 1);
+      setJuvenilVulgar(resp.data.acne_juvenil_vulgar || 'N');
+      setTardia(resp.data.acne_tardia || 'N');
+      setAcneFamilia(resp.data.acne_familia || 'N');
+      setAcneInicio(resp.data.acne_inicio || '');
+      setAcneEvolucao(resp.data.acne_evolucao || '');
+      setOutrasConsideracoes(resp.data.outras_consideracoes || '');
+      setData(resp.data.data || new Date());
+      setAssinatura(resp.data.assinatura_cliente);
+      setImagem(resp.data.imagem_rosto);
+      setCliente(resp.data.cliente_id);
+    })
+    .catch(e => console.log(e));
+
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
@@ -518,32 +689,8 @@ const EditFicha: React.FC = props => {
         </Exit>
         <Title>Dados gerais de saúde e hábitos de vida</Title>
         <Form>
-          <RadioTitle>Cliente:</RadioTitle>
-          <RadioView>
-            <Picker
-              style={{ height: 40, width: 300 }}
-              selectedValue={cliente}
-              onValueChange={(itemValue, itemIndex) => setCliente(itemValue)}
-            >
-              <Picker.Item label="Selecione o cliente" value={0} />
-              {/* <FlatList
-                keyExtractor={item => item.id}
-                data={clientesLista}
-                renderItem={({ item }: any) => (
-                  <Picker.Item label={item.nome} value={item.id} />
-                )}
-              /> */}
-              {clientesLista.map((item, i) => {
-                return (
-                  <Picker.Item
-                    key={item.id}
-                    label={item.nome}
-                    value={item.id}
-                  />
-                );
-              })}
-            </Picker>
-          </RadioView>
+          <Button>Realizar consulta</Button>
+          <Button>Editar cliente</Button>
           <InputFicha
             value={queixaPrincipal}
             onChangeText={setQueixaPrincipal}

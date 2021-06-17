@@ -1,15 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { Platform, ScrollView, View, Text } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Platform, ScrollView } from 'react-native';
 import InputFicha from '../../components/InputFicha';
 import Button from '../../components/Button';
-import DatePicker from '../../components/DatePicker';
 
 import { Container, Form, Icon, Title, Exit } from './styles';
+import api from '../../services/api';
 
-const EditCliente: React.FC = props => {
+const EditUsuario: React.FC = props => {
+  const { token } = props.route.params;
+
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [senhas, setSenha] = useState('');
+
+  useEffect(() => {
+    api
+      .get('user', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(resp => {
+        console.log('effetc');
+        setNome(resp.data.nome);
+        setEmail(resp.data.email);
+      })
+      .catch(e => console.log(e));
+  }, []);
+
+  const handleSubmit = () => {
+    if (senhas === '') {
+      const data = {
+        nome,
+        email,
+      };
+
+      api
+        .put('user', JSON.stringify(data), {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(resp => {
+          props.navigation.goBack();
+        })
+        .catch(e => console.log(e));
+    } else {
+      const data = {
+        nome,
+        email,
+        senha: senhas,
+      };
+
+      api
+        .put('user', JSON.stringify(data), {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(resp => {
+          props.navigation.goBack();
+        })
+        .catch(e => console.log(e));
+    }
+  };
+
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
@@ -25,21 +83,31 @@ const EditCliente: React.FC = props => {
         </Exit>
         <Title>Editar dados</Title>
         <Form>
-          <InputFicha name="nome" label="Nome" />
-          <InputFicha name="email" label="E-mail" />
-          <InputFicha name="senha" label="Senha" />
+          <InputFicha
+            value={nome}
+            onChangeText={setNome}
+            name="nome"
+            label="Nome"
+          />
+          <InputFicha
+            value={email}
+            onChangeText={setEmail}
+            name="email"
+            label="E-mail"
+          />
+          <InputFicha
+            value={senhas}
+            onChangeText={setSenha}
+            name="senha"
+            label="Senha"
+            secureTextEntry
+          />
 
-          <Button
-            onPress={() => {
-              props.navigation.navigate('ListFichas');
-            }}
-          >
-            Salvar
-          </Button>
+          <Button onPress={handleSubmit}>Salvar</Button>
         </Form>
       </Container>
     </ScrollView>
   );
 };
 
-export default EditCliente;
+export default EditUsuario;
