@@ -20,6 +20,7 @@
     "expo-font": "^9.1.0",
     "expo-media-library": "^12.0.2",
     "expo-status-bar": "~1.0.4",
+    "form-data": "^4.0.0",
     "metro": "0.58.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",

@@ -65,11 +65,15 @@ const ListFichas: React.FC = props => {
           <CardTextContainer>
             <Nome>{`${item.cliente.nome}`}</Nome>
             <Queixa>{`${item.consultas[0].tratamentos} ${item.consultas[0].observacoes} ${item.consultas[0].orientacoes}`}</Queixa>
+
             <Data>{`${item.data.slice(0, -19)}`}</Data>
           </CardTextContainer>
           <CardImage
             style={{ resizeMode: 'contain' }}
-            source={{ uri: item.imagem_rosto }}
+            source={{
+              uri:
+                'https://drive.google.com/uc?id=1Cj0-mYb_ZvUJaWSYWEaOlZ6PDPPX0nGK',
+            }}
           />
         </Card>
       );
@@ -113,7 +117,7 @@ const ListFichas: React.FC = props => {
         </FotButton>
         <FotButton
           onPress={() => {
-            // props.navigation.navigate('CadFicha', { token });
+            props.navigation.navigate('CadFicha', { token });
           }}
         >
           <FotText>Nova ficha</FotText>
