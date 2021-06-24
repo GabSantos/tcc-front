@@ -36,6 +36,7 @@ interface Ficha {
 const ListFichas: React.FC = props => {
   const { token } = props.route.params;
   const [fichas, setFichas] = useState([]);
+  const [ready, setReady] = useState(false);
   useEffect(() => {
     api
       .get('record', {
@@ -45,12 +46,40 @@ const ListFichas: React.FC = props => {
       })
       .then(resp => {
         setFichas(resp.data);
+        setReady(true);
       })
       .catch(e => console.log(e));
-  }, []);
+  });
 
   const render = (item: any) => {
     if (item.cliente !== null) {
+      if (item.consultas.length > 0) {
+        return (
+          <Card
+            key={item.id}
+            onPress={() => {
+              props.navigation.navigate('Ficha', {
+                token,
+                fichaId: item.id,
+                imageUrl: item.imagem_rosto,
+              });
+            }}
+          >
+            <CardTextContainer>
+              <Nome>{`${item.cliente.nome}`}</Nome>
+              <Queixa>{`${item.consultas[0].tratamentos}`}</Queixa>
+
+              <Data>{`${item.data.slice(0, -19)}`}</Data>
+            </CardTextContainer>
+            <CardImage
+              style={{ resizeMode: 'contain' }}
+              source={{
+                uri: item.imagem_rosto,
+              }}
+            />
+          </Card>
+        );
+      }
       return (
         <Card
           key={item.id}
@@ -64,15 +93,14 @@ const ListFichas: React.FC = props => {
         >
           <CardTextContainer>
             <Nome>{`${item.cliente.nome}`}</Nome>
-            <Queixa>{`${item.consultas[0].tratamentos} ${item.consultas[0].observacoes} ${item.consultas[0].orientacoes}`}</Queixa>
+            <Queixa>Realize a primeira consulta</Queixa>
 
             <Data>{`${item.data.slice(0, -19)}`}</Data>
           </CardTextContainer>
           <CardImage
             style={{ resizeMode: 'contain' }}
             source={{
-              uri:
-                'https://drive.google.com/uc?id=1Cj0-mYb_ZvUJaWSYWEaOlZ6PDPPX0nGK',
+              uri: item.imagem_rosto,
             }}
           />
         </Card>
@@ -95,7 +123,7 @@ const ListFichas: React.FC = props => {
             renderItem={render}
           /> */}
 
-          {fichas.map(render)}
+          {ready && fichas.map(render)}
 
           {/* fim fichas */}
         </Container>

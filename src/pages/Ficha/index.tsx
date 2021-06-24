@@ -231,7 +231,11 @@ const Ficha: React.FC = props => {
           </Button>
           <Button
             onPress={() => {
-              // props.navigation.navigate('Ficha', { token, fichaId, cliente });
+              props.navigation.navigate('EditFicha', {
+                token,
+                fichaId,
+                cliente,
+              });
             }}
           >
             Edita ficha
