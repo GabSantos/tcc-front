@@ -37,7 +37,9 @@ const ListFichas: React.FC = props => {
   const { token } = props.route.params;
   const [fichas, setFichas] = useState([]);
   const [ready, setReady] = useState(false);
-  useEffect(() => {
+
+  const getFichas = () => {
+    setReady(false);
     api
       .get('record', {
         headers: {
@@ -49,7 +51,11 @@ const ListFichas: React.FC = props => {
         setReady(true);
       })
       .catch(e => console.log(e));
-  });
+  };
+
+  useEffect(() => {
+    getFichas();
+  }, []);
 
   const render = (item: any) => {
     if (item.cliente !== null) {

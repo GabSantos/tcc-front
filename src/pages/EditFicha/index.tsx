@@ -5,6 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { RadioButton } from 'react-native-paper';
 import FormData from 'form-data';
+import * as ImagePicker from 'expo-image-picker';
 import InputFicha from '../../components/InputFicha';
 import Button from '../../components/Button';
 import DatePicker from '../../components/DatePicker';
@@ -179,7 +180,7 @@ interface CadastroFicha {
   clienteId: number;
 }
 
-const CadFicha: React.FC = props => {
+const EditFicha: React.FC = props => {
   const { token, fichaId, cliente } = props.route.params;
 
   const [queixaPrincipal, setQueixaPrincipal] = useState('');
@@ -260,11 +261,11 @@ const CadFicha: React.FC = props => {
 
   const [antidepressivos, setAntidepressivos] = useState('');
 
-  const [sono, setSono] = useState(1);
+  const [sono, setSono] = useState(5);
   const [remedioDormir, setRemedioDormir] = useState('N');
 
-  const [sensibilidadeDor, setSensibilidadeDor] = useState(1);
-  const [estresse, setEstresse] = useState(1);
+  const [sensibilidadeDor, setSensibilidadeDor] = useState(5);
+  const [estresse, setEstresse] = useState(5);
   const [checkups, setCheckups] = useState('N');
 
   const [enfermidadesAtuais, setEnfermidadesAtuais] = useState('');
@@ -286,7 +287,7 @@ const CadFicha: React.FC = props => {
   const [psoriase, setPsoriase] = useState('N');
   const [dermatiteSeborreica, setDermatiteSeborreica] = useState('N');
   const [placasMetalicasNaFace, setPlacasMetalicasNaFace] = useState('N');
-  const [atividadesFisicas, setAtividadesFisicas] = useState(1);
+  const [atividadesFisicas, setAtividadesFisicas] = useState();
 
   const [quaisAtividades, setQuaisAtividades] = useState('');
   const [alimentacao, setAlimentacao] = useState('');
@@ -300,7 +301,7 @@ const CadFicha: React.FC = props => {
   const [cigarrosInicio, setCigarrosInicio] = useState('');
   const [cigarrosFim, setCigarrosFim] = useState('');
 
-  const [funcaoIntestinal, setFuncaoIntestinal] = useState(1);
+  const [funcaoIntestinal, setFuncaoIntestinal] = useState(5);
 
   const [funcaoIntestinalObs, setFuncaoIntestinalObs] = useState('');
   const [infoComplementar, setInfoComplementar] = useState('');
@@ -318,18 +319,18 @@ const CadFicha: React.FC = props => {
   const [tratamentosEspecificos, setTratamentosEspecificos] = useState('');
   const [fotoprotecao, setFotoprotecao] = useState('');
 
-  const [exposicaoSolar, setExposicaoSolar] = useState(1);
+  const [exposicaoSolar, setExposicaoSolar] = useState();
 
   const [usoCosmeticos, setusoCosmeticos] = useState('');
   const [usoCosmeticosSensibilidade, setusoCosmeticosSensibilidade] = useState(
     '',
   );
 
-  const [fitzpatrick, setFitzpatrick] = useState(1);
-  const [etnia, setEtnia] = useState(1);
-  const [tipoPele, setTipoPele] = useState(1);
-  const [aoTato, setAoTato] = useState(1);
-  const [sensibilidadePele, setSensibilidadePele] = useState(1);
+  const [fitzpatrick, setFitzpatrick] = useState(5);
+  const [etnia, setEtnia] = useState(5);
+  const [tipoPele, setTipoPele] = useState(5);
+  const [aoTato, setAoTato] = useState(5);
+  const [sensibilidadePele, setSensibilidadePele] = useState(5);
 
   const [sensibilidadePeleObs, setSensibilidadePeleObs] = useState('');
 
@@ -362,7 +363,7 @@ const CadFicha: React.FC = props => {
   const [escoriacoes, setEscoriacoes] = useState('N');
   const [comedoesAbertos, setComedoesAbertos] = useState('N');
   const [hematomas, setHematomas] = useState('N');
-  const [fotoenvelhecimento, setFotoenvelhecimento] = useState(1);
+  const [fotoenvelhecimento, setFotoenvelhecimento] = useState(5);
 
   const [verrugasFrontal, setVerrugasFrontal] = useState('');
   const [verrugasGlabela, setVerrugasGlabela] = useState('');
@@ -381,7 +382,7 @@ const CadFicha: React.FC = props => {
   const [comedoesFechadosAcne, setComedoesFechadosAcne] = useState('N');
   const [papulas, setPapulas] = useState('N');
 
-  const [grauAcne, setGrauAcne] = useState(1);
+  const [grauAcne, setGrauAcne] = useState(5);
 
   // const [escoriacoesAcne, setEscoriacoesAcne] = useState('N');
   const [juvenilVulgar, setJuvenilVulgar] = useState('N');
@@ -391,6 +392,9 @@ const CadFicha: React.FC = props => {
   const [acneInicio, setAcneInicio] = useState('');
   const [acneEvolucao, setAcneEvolucao] = useState('');
   const [outrasConsideracoes, setOutrasConsideracoes] = useState('');
+
+  const [imagemRosto, setImagemRosto] = useState('');
+  const [imagemRostoText, setImagemRostoText] = useState('');
 
   // #region  date picker Ultima Consulta
   const [ultimaConsultaText, setUltimaConsultaText] = useState('');
@@ -491,11 +495,182 @@ const CadFicha: React.FC = props => {
       .get(`record/${fichaId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
         },
       })
       .then(resp => {
-        console.log(resp);
+        console.log(resp.data);
+        setQueixaPrincipal(resp.data.queixa_principal);
+        // setUltimaConsulta(
+        //  resp.data.ginecologista_ultima_consulta || new Date(),
+        // );
+        setCicloMenstrualNormal(resp.data.ciclo_menstrual_normal);
+        setAlteracoesCicloMenstrual(resp.data.alteracoes_ciclo_menstrual || '');
+        // setPrimeiraMenstruacao(resp.data.primeira_menstruacao || new Date());
+        // setUltimaMenstruacao(resp.data.ultima_menstruacao || new Date());
+        setSop(resp.data.sop);
+        setClimaterio(resp.data.climaterio);
+        setMenopausa(resp.data.menopausa);
+        setReposicaoHormonal(resp.data.reposicao_hormonal);
+        setGestante(resp.data.gestante);
+        setMesesGestacao(resp.data.meses_gestacao || 0);
+        setNroGravidez(resp.data.quantidade_gravidez || 0);
+        setNroFilhos(resp.data.quantidade_filhos || 0);
+        setIdadeFilhos(resp.data.idades_filhos || '');
+        setSeios(resp.data.seios_normais);
+        setSeiosAlteracoes(resp.data.seios_alteracoes || '');
+        setContraceptivos(resp.data.contraceptivos_hormonais);
+        setContraceptivosTempo(resp.data.contraceptivos_hormonais_tempo || '');
+        setHirsutismo(resp.data.hirsutismo);
+        setHirsutismoRepentino(resp.data.hirsutismo_repentino || 'N');
+        setHirsutismoIdade(resp.data.hirsutismo_idade || '');
+        setDiabetes(resp.data.diabetes);
+        setTireoide(resp.data.tireoide);
+        setMarcaPasso(resp.data.marca_passo);
+        setCardiacoObservacoes(resp.data.cardiaco_observacoes || '');
+        setHipotensao(resp.data.hipotensao);
+        setHipertensao(resp.data.hipertensao);
+        setAlergias(resp.data.alergias || '');
+        setTratamentoDermatologico(resp.data.tratamento_dermatologico);
+        settratamentoDermatologicoJustificativa(
+          resp.data.tratamento_dermatologico_justificativa || '',
+        );
+        settratamentoDermatologicoEmUso(
+          resp.data.tratamento_dermatologico_em_uso || '',
+        );
+        settratamentoDermatologicoTempo(
+          resp.data.tratamento_dermatologico_em_uso_tempo || '',
+        );
+        setTratamentoAnterior(resp.data.tratamento_dermatologico_anterior);
+        setTratamentoAnteriorJustivicativa(
+          resp.data.tratamento_dermatologico_anterior_justificativa || '',
+        );
+        setTratamentoAnteriorUsado(
+          resp.data.tratamento_dermatologico_anterior_usado || '',
+        );
+        setTratamentoAnteriorTempo(
+          resp.data.tratamento_dermatologico_anterior_tempo || '',
+        );
+        setAnsiedade(resp.data.ansiedade);
+        setImpaciencia(resp.data.impaciencia);
+        setDepressao(resp.data.depressao);
+        setChoqueEmocional(resp.data.choque_emocional);
+        setAntidepressivo(resp.data.usa_antidepressivos);
+        setAntidepressivos(resp.data.antidepressivos || '');
+        setSono(resp.data.sono_id);
+        setRemedioDormir(resp.data.usa_remedios_para_dormir);
+        setSensibilidadeDor(resp.data.sensibilidade_a_dor_id);
+        setEstresse(resp.data.estresse_id);
+        setCheckups(resp.data.checkups_medicos_regularmente);
+        setEnfermidadesAtuais(resp.data.enfermidades_atuais || '');
+        setEnfermidadesAnteriores(resp.data.enfermidades_anteriores || '');
+        setDores(resp.data.medicamentos_dores);
+        setEpilepsia(resp.data.medicamentos_epilepsia);
+        setAntecedentesOncologicos(
+          resp.data.medicamentos_antecedentes_oncologicos,
+        );
+        setRetencaoHidrica(resp.data.medicamentos_retencao_hidrica);
+        setRosacea(resp.data.medicamentos_rosacea);
+        setLentesDeContato(resp.data.medicamentos_lentes_de_contato);
+        setTonturas(resp.data.medicamentos_tonturas);
+        setProblemasRenais(resp.data.medicamentos_problemas_renais);
+        setLupus(resp.data.medicamentos_lupus);
+        setQueloides(resp.data.medicamentos_queloides);
+        setImplanteDentario(resp.data.medicamentos_implante_dentario);
+        setFaltaDeAr(resp.data.medicamentos_falta_de_ar);
+        setUsoDeCorticoides(resp.data.medicamentos_uso_de_corticoides);
+        setPsoriase(resp.data.medicamentos_psoriase);
+        setDermatiteSeborreica(resp.data.medicamentos_dermatite_seborreica);
+        setPlacasMetalicasNaFace(resp.data.medicamentos_placas_metalicas_face);
+        setAtividadesFisicas(resp.data.frequencia_atividades_fisicas_id);
+        setQuaisAtividades(resp.data.atividades_fisicas || '');
+        setAlimentacao(resp.data.alimentacao || '');
+        setAguaQuantidade(resp.data.agua_quantidade || '');
+        setAguaCopos(resp.data.agua_copos.toString());
+        setEtilismo(resp.data.etilismo || '');
+        setFumante(resp.data.fumante);
+        setCigarrosDia(resp.data.cigarros_dia?.toString() || '');
+        setCigarrosInicio(resp.data.fumante_inicio || '');
+        setCigarrosFim(resp.data.fumante_fim || '');
+        setFuncaoIntestinal(resp.data.funcao_intestinal_id);
+        setFuncaoIntestinalObs(resp.data.funcao_intestinal_obs || '');
+        setInfoComplementar(resp.data.informacoes_complementares || '');
+        setTratamentosAnteriores(
+          resp.data.tratamentos_esteticos_anteriores || '',
+        );
+        setCirurgiaPlasticaFace(resp.data.cirurgia_plastica_face || '');
+        setCirurgiaPlasticaFaceTempo(
+          resp.data.cirurgia_plastica_face_tempo || '',
+        );
+        setLimpeza(resp.data.uso_de_cosmeticos_limpeza || '');
+        setEsfoliacao(resp.data.uso_de_cosmeticos_esfoliacao || '');
+        setTonioficacao(resp.data.uso_de_cosmeticos_tonificacao || '');
+        setAcidos(resp.data.uso_de_cosmeticos_acidos || '');
+        setHidratacao(resp.data.uso_de_cosmeticos_hidratacao || '');
+        setTratamentosEspecificos(
+          resp.data.uso_de_cosmeticos_tratamentos_especificos || '',
+        );
+        setFotoprotecao(resp.data.uso_de_cosmeticos_fotoprotecao || '');
+        setExposicaoSolar(resp.data.exposicao_solar_id);
+        setusoCosmeticos(resp.data.uso_de_cosmeticos_maquiagem || '');
+        setusoCosmeticosSensibilidade(resp.data.cosmeticos_sensibilidade || '');
+        setFitzpatrick(resp.data.fototipo_id);
+        setEtnia(resp.data.etnia_id);
+        setTipoPele(resp.data.tipo_pele_id);
+        setAoTato(resp.data.pele_ao_tato_id);
+        setSensibilidadePele(resp.data.pele_sensibilidade_id);
+        setSensibilidadePeleObs(resp.data.pele_sensibilidade_observacao || '');
+        setAcromias(resp.data.acromias);
+        setHipocromias(resp.data.hipocromias);
+        setEfelides(resp.data.efelides);
+        setMelasmas(resp.data.melasmas);
+        setLentigos(resp.data.lentigos);
+        setMelanose(resp.data.melanose);
+        setPosTraumatica(resp.data.hipercromia_pos_traumatica);
+        setPosInflamatoria(resp.data.hipercromia_pos_inflamatoria);
+        setXantelasmas(resp.data.xantelasmas);
+        setHiperplasiaSebacea(resp.data.hiperplasia_sebacea);
+        setCicatrizes(resp.data.cicatrizes);
+        setSeborreia(resp.data.seborreia);
+        setFlacidesMuscular(resp.data.flacidez_muscular);
+        setComedoesCapilares(resp.data.comedoes_capilares);
+        setEritemas(resp.data.eritemas);
+        setVerrugas(resp.data.verrugas);
+        setQueratose(resp.data.queratose_pilar_folicular);
+        setAsfitica(resp.data.asfitica);
+        setOstiosDilatados(resp.data.ostios_dilatados);
+        setFlacidezTissular(resp.data.flacidez_tissular);
+        setMicromedoes(resp.data.microcomedoes);
+        setEdemas(resp.data.edemas);
+        setNevos(resp.data.nevos);
+        setDermografismo(resp.data.dermografismo);
+        setTalangiectasias(resp.data.talangiectasias);
+        setMiliuns(resp.data.miliuns);
+        setEscoriacoes(resp.data.escoriacoes);
+        setComedoesAbertos(resp.data.comedoes_abertos);
+        setHematomas(resp.data.hematomas);
+        setFotoenvelhecimento(resp.data.fotoenvelhecimento_id);
+        setVerrugasFrontal(resp.data.verrugas_frontal || '');
+        setVerrugasGlabela(resp.data.verrugas_glabela || '');
+        setVerrugasOrbicularOlhos(resp.data.verrugas_orbicular_olhos || '');
+        setVerrugasOrbicularLabios(resp.data.verrugas_orbicular_labios || '');
+        setVerrugasLateralFace(resp.data.verrugas_lateral_face || '');
+        setVerrugasSulco(resp.data.verrugas_sulco_nasogeniano || '');
+        setVerrugasPescoco(resp.data.verrugas_pescoco || '');
+        setVerrugasColo(resp.data.verrugas_colo || '');
+        setPustulas(resp.data.pustulas);
+        setNodulos(resp.data.nodulos);
+        setComedoesFechadosAcne(resp.data.comedoes_fechados);
+        setPapulas(resp.data.papulas);
+        setGrauAcne(resp.data.acne_grau_id || '');
+        setJuvenilVulgar(resp.data.acne_juvenil_vulgar);
+        setTardia(resp.data.acne_tardia);
+        setAcneFamilia(resp.data.acne_familia);
+        setAcneInicio(resp.data.acne_inicio || '');
+        setAcneEvolucao(resp.data.acne_evolucao || '');
+        setOutrasConsideracoes(resp.data.outras_consideracoes || '');
+        setImagemRostoText(resp.data.imagem_rosto);
+        setImagemRostoText(resp.data.descricao_rosto || '');
+        console.log(fotoenvelhecimento, resp.data.fotoenvelhecimento_id);
       })
       .catch(e => console.log(e));
   }, []);
@@ -515,32 +690,6 @@ const CadFicha: React.FC = props => {
         </Exit>
         <Title>Dados gerais de saúde e hábitos de vida</Title>
         <Form>
-          <RadioTitle>Cliente:</RadioTitle>
-          <RadioView>
-            <Picker
-              style={{ height: 40, width: 300 }}
-              selectedValue={cliente}
-              onValueChange={(itemValue, itemIndex) => setCliente(itemValue)}
-            >
-              <Picker.Item label="Selecione o cliente" value={0} />
-              {/* <FlatList
-                keyExtractor={item => item.id}
-                data={clientesLista}
-                renderItem={({ item }: any) => (
-                  <Picker.Item label={item.nome} value={item.id} />
-                )}
-              /> */}
-              {clientesLista.map((item, i) => {
-                return (
-                  <Picker.Item
-                    key={item.id}
-                    label={item.nome}
-                    value={item.id}
-                  />
-                );
-              })}
-            </Picker>
-          </RadioView>
           <InputFicha
             value={queixaPrincipal}
             onChangeText={setQueixaPrincipal}
@@ -1603,6 +1752,7 @@ const CadFicha: React.FC = props => {
               onChangeText={setAguaCopos}
               name="copos"
               placeholder="copos/dia"
+              keyboardType="numeric"
             />
             <InputFicha
               value={etilismo}
@@ -1633,6 +1783,7 @@ const CadFicha: React.FC = props => {
               onChangeText={setCigarrosDia}
               name="fumante_quantidade"
               placeholder="Quantos/dia"
+              keyboardType="numeric"
             />
             <InputFicha
               value={cigarrosInicio}
@@ -1652,16 +1803,16 @@ const CadFicha: React.FC = props => {
               <RadioLabel>Regular</RadioLabel>
               <RadioButton
                 value="Regular"
-                status={funcaoIntestinal === 1 ? 'checked' : 'unchecked'}
-                onPress={() => setFuncaoIntestinal(1)}
+                status={funcaoIntestinal === 5 ? 'checked' : 'unchecked'}
+                onPress={() => setFuncaoIntestinal(5)}
               />
             </RadioView>
             <RadioView>
               <RadioLabel>Ruim</RadioLabel>
               <RadioButton
                 value="Ruim"
-                status={funcaoIntestinal === 2 ? 'checked' : 'unchecked'}
-                onPress={() => setFuncaoIntestinal(2)}
+                status={funcaoIntestinal === 15 ? 'checked' : 'unchecked'}
+                onPress={() => setFuncaoIntestinal(15)}
               />
             </RadioView>
             <InputFicha
@@ -1833,8 +1984,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="I"
-                status={fitzpatrick === 1 ? 'checked' : 'unchecked'}
-                onPress={() => setFitzpatrick(1)}
+                status={fitzpatrick === 5 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(5)}
               />
             </RadioView>
 
@@ -1844,8 +1995,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="II"
-                status={fitzpatrick === 2 ? 'checked' : 'unchecked'}
-                onPress={() => setFitzpatrick(2)}
+                status={fitzpatrick === 15 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(15)}
               />
             </RadioView>
             <RadioView>
@@ -1855,8 +2006,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="III"
-                status={fitzpatrick === 3 ? 'checked' : 'unchecked'}
-                onPress={() => setFitzpatrick(3)}
+                status={fitzpatrick === 25 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(25)}
               />
             </RadioView>
             <RadioView>
@@ -1866,8 +2017,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="IV"
-                status={fitzpatrick === 4 ? 'checked' : 'unchecked'}
-                onPress={() => setFitzpatrick(4)}
+                status={fitzpatrick === 35 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(35)}
               />
             </RadioView>
             <RadioView>
@@ -1876,8 +2027,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="V"
-                status={fitzpatrick === 5 ? 'checked' : 'unchecked'}
-                onPress={() => setFitzpatrick(5)}
+                status={fitzpatrick === 45 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(45)}
               />
             </RadioView>
             <RadioView>
@@ -1886,8 +2037,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="VI"
-                status={fitzpatrick === 6 ? 'checked' : 'unchecked'}
-                onPress={() => setFitzpatrick(6)}
+                status={fitzpatrick === 55 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(55)}
               />
             </RadioView>
           </>
@@ -2380,8 +2531,8 @@ const CadFicha: React.FC = props => {
               <RadioLabel>Tipo I - sem rugas (20 - 30 anos)</RadioLabel>
               <RadioButton
                 value="I"
-                status={fotoenvelhecimento === 1 ? 'checked' : 'unchecked'}
-                onPress={() => setFotoenvelhecimento(1)}
+                status={fotoenvelhecimento === 5 ? 'checked' : 'unchecked'}
+                onPress={() => setFotoenvelhecimento(5)}
               />
             </RadioView>
             <RadioView>
@@ -2390,8 +2541,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="II"
-                status={fotoenvelhecimento === 2 ? 'checked' : 'unchecked'}
-                onPress={() => setFotoenvelhecimento(2)}
+                status={fotoenvelhecimento === 15 ? 'checked' : 'unchecked'}
+                onPress={() => setFotoenvelhecimento(15)}
               />
             </RadioView>
             <RadioView>
@@ -2400,8 +2551,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="III"
-                status={fotoenvelhecimento === 3 ? 'checked' : 'unchecked'}
-                onPress={() => setFotoenvelhecimento(3)}
+                status={fotoenvelhecimento === 25 ? 'checked' : 'unchecked'}
+                onPress={() => setFotoenvelhecimento(25)}
               />
             </RadioView>
             <RadioView>
@@ -2411,8 +2562,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="IV"
-                status={fotoenvelhecimento === 4 ? 'checked' : 'unchecked'}
-                onPress={() => setFotoenvelhecimento(4)}
+                status={fotoenvelhecimento === 35 ? 'checked' : 'unchecked'}
+                onPress={() => setFotoenvelhecimento(35)}
               />
             </RadioView>
           </>
@@ -2669,29 +2820,55 @@ const CadFicha: React.FC = props => {
               placeholder="Outras considerações"
             />
           </>
+          {/* Rosto */}
+          <>
+            <Area>
+              <AreaText>Rosto</AreaText>
+            </Area>
+            <Button
+              onPress={async () => {
+                const result = await ImagePicker.launchImageLibraryAsync({
+                  mediaTypes: ImagePicker.MediaTypeOptions.All,
+                  allowsEditing: true,
+                  aspect: [4, 3],
+                  quality: 1,
+                });
+
+                setImagemRosto(result.uri);
+              }}
+            >
+              Selecionar foto do rosto
+            </Button>
+            <InputFicha
+              value={imagemRostoText}
+              onChangeText={setImagemRostoText}
+              name="rosto_text"
+              placeholder="Descrição rosto"
+            />
+          </>
           {/* AQUIIIIIIIIIIIIIIIIIIIIII */}
           <Button
-            onPress={() => {
+            onPress={async () => {
               const formData = new FormData();
               // const ficha: CadastroFicha = {
               formData.append('queixaPrincipal', queixaPrincipal);
-              formData.append(
+              /* formData.append(
                 'ginecologistaUltimaConsulta',
                 ultimaConsulta.toISOString().slice(0, 10),
-              );
+              ); */
               formData.append('cicloMenstrualNormal', cicloMenstrualNormal);
               formData.append(
                 'alteracoesCicloMenstrual',
                 alteracoesCicloMenstrual,
               );
-              formData.append(
+              /* formData.append(
                 'primeiraMenstruacao',
                 primeiraMenstruacao.toISOString().slice(0, 10),
               );
               formData.append(
                 'ultimaMenstruacao',
                 ultimaMenstruacao.toISOString().slice(0, 10),
-              );
+              ); */
               formData.append('sop', sop);
               formData.append('climaterio', climaterio);
               formData.append('menopausa', menopausa);
@@ -2754,7 +2931,6 @@ const CadFicha: React.FC = props => {
               formData.append('impaciencia', impaciencia);
               formData.append('depressao', depressao);
               formData.append('choqueEmocional', choqueEmocional);
-              formData.append('alergias', alergias);
               formData.append('usaAntidepressivos', antidepressivo);
               formData.append('antidepressivos', antidepressivos);
               formData.append('sonoId', sono);
@@ -2773,7 +2949,6 @@ const CadFicha: React.FC = props => {
               formData.append('medicamentosRetencaoHidrica', retencaoHidrica);
               formData.append('medicamentosRosacea', rosacea);
               formData.append('medicamentosLentesDeContato', lentesDeContato);
-              formData.append('enfermidadesAtuais', enfermidadesAtuais);
               formData.append('medicamentosTonturas', tonturas);
               formData.append('medicamentosProblemasRenais', problemasRenais);
               formData.append('medicamentosLupus', lupus);
@@ -2797,7 +2972,7 @@ const CadFicha: React.FC = props => {
               formData.append('atividadesFisicas', quaisAtividades);
               formData.append('alimentacao', alimentacao);
               formData.append('aguaQuantidade', aguaQuantidade);
-              formData.append('aguaCopos', aguaCopos);
+              formData.append('aguaCopos', parseInt(aguaCopos, 10));
               formData.append('etilismo', etilismo);
               formData.append('fumante', fumante);
               formData.append('cigarrosDia', cigarrosDia);
@@ -2896,18 +3071,32 @@ const CadFicha: React.FC = props => {
               formData.append('acneInicio', acneInicio);
               formData.append('acneEvolucao', acneEvolucao);
               formData.append('outrasConsideracoes', outrasConsideracoes);
-              formData.append('ativo', 'S');
+              formData.append('imagemRosto', {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore: Object is possibly 'undefined'.
+                uri: imagemRosto,
+                type: 'image/jpg',
+                name: 'rosto.jpg',
+              });
+              formData.append('descricaoRosto', imagemRostoText);
 
               // };
+              try {
+                const resp = await api.put(`record/${fichaId}`, formData, {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                  },
+                });
 
-              if (cliente === 0) {
-                // erro sem cliente
-              } else {
-                props.navigation.navigate('Foto', { token, formData });
+                props.navigation.navigate('ListFichas', { token });
+              } catch (err) {
+                console.error(err);
+                props.navigation.navigate('ListFichas', { token });
               }
             }}
           >
-            Cadastrar
+            Salvar
           </Button>
         </Form>
       </Container>
@@ -2915,4 +3104,4 @@ const CadFicha: React.FC = props => {
   );
 };
 
-export default CadFicha;
+export default EditFicha;

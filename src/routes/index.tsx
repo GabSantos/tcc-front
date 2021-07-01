@@ -11,6 +11,7 @@ import EditCliente from '../pages/EditCliente';
 
 import ListFichas from '../pages/ListFichas';
 import CadFicha from '../pages/CadFicha';
+import EditFicha from '../pages/EditFicha';
 import Ficha from '../pages/Ficha';
 import Consulta from '../pages/Consulta';
 
@@ -36,6 +37,7 @@ const AuthRoutes: React.FC = props => (
     <Auth.Screen name="ListFichas" component={ListFichas} />
     <Auth.Screen name="CadFicha" component={CadFicha} />
     <Auth.Screen name="Ficha" component={Ficha} />
+    <Auth.Screen name="EditFicha" component={EditFicha} />
     <Auth.Screen name="Consulta" component={Consulta} />
   </Auth.Navigator>
 );

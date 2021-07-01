@@ -13,6 +13,7 @@ export const Container = styled.View`
   margin: 12px 0;
   flex-direction: row;
   align-items: center;
+  overflow: hidden;
 `;
 
 export const TextInput = styled.TextInput`
@@ -24,6 +25,7 @@ export const TextInput = styled.TextInput`
     font-size: 18px;
     font-family: 'MontserratRegular';
   }
+  box-sizing: border-box;
 `;
 
 export const Icon = styled(Feather)`

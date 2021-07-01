@@ -200,7 +200,6 @@ const EditCliente: React.FC = props => {
                 dataNascimento: data.slice(0, 10),
                 ativo: 'S',
               };
-              console.log(cli);
               api
                 .put(`client/${cliente}`, JSON.stringify(cli), {
                   headers: {

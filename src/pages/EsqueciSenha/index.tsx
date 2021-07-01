@@ -42,6 +42,7 @@ const EsqueciSenha: React.FC = props => {
         setMessage('Usuário não encontrado');
         setError(true);
         setModal(true);
+        console.log(e);
       });
   };
 

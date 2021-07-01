@@ -259,11 +259,11 @@ const CadFicha: React.FC = props => {
 
   const [antidepressivos, setAntidepressivos] = useState('');
 
-  const [sono, setSono] = useState(1);
+  const [sono, setSono] = useState(5);
   const [remedioDormir, setRemedioDormir] = useState('N');
 
-  const [sensibilidadeDor, setSensibilidadeDor] = useState(1);
-  const [estresse, setEstresse] = useState(1);
+  const [sensibilidadeDor, setSensibilidadeDor] = useState(5);
+  const [estresse, setEstresse] = useState(5);
   const [checkups, setCheckups] = useState('N');
 
   const [enfermidadesAtuais, setEnfermidadesAtuais] = useState('');
@@ -285,7 +285,7 @@ const CadFicha: React.FC = props => {
   const [psoriase, setPsoriase] = useState('N');
   const [dermatiteSeborreica, setDermatiteSeborreica] = useState('N');
   const [placasMetalicasNaFace, setPlacasMetalicasNaFace] = useState('N');
-  const [atividadesFisicas, setAtividadesFisicas] = useState(1);
+  const [atividadesFisicas, setAtividadesFisicas] = useState(5);
 
   const [quaisAtividades, setQuaisAtividades] = useState('');
   const [alimentacao, setAlimentacao] = useState('');
@@ -299,7 +299,7 @@ const CadFicha: React.FC = props => {
   const [cigarrosInicio, setCigarrosInicio] = useState('');
   const [cigarrosFim, setCigarrosFim] = useState('');
 
-  const [funcaoIntestinal, setFuncaoIntestinal] = useState(1);
+  const [funcaoIntestinal, setFuncaoIntestinal] = useState(5);
 
   const [funcaoIntestinalObs, setFuncaoIntestinalObs] = useState('');
   const [infoComplementar, setInfoComplementar] = useState('');
@@ -317,18 +317,18 @@ const CadFicha: React.FC = props => {
   const [tratamentosEspecificos, setTratamentosEspecificos] = useState('');
   const [fotoprotecao, setFotoprotecao] = useState('');
 
-  const [exposicaoSolar, setExposicaoSolar] = useState(1);
+  const [exposicaoSolar, setExposicaoSolar] = useState(5);
 
   const [usoCosmeticos, setusoCosmeticos] = useState('');
   const [usoCosmeticosSensibilidade, setusoCosmeticosSensibilidade] = useState(
     '',
   );
 
-  const [fitzpatrick, setFitzpatrick] = useState(1);
-  const [etnia, setEtnia] = useState(1);
-  const [tipoPele, setTipoPele] = useState(1);
-  const [aoTato, setAoTato] = useState(1);
-  const [sensibilidadePele, setSensibilidadePele] = useState(1);
+  const [fitzpatrick, setFitzpatrick] = useState(5);
+  const [etnia, setEtnia] = useState(5);
+  const [tipoPele, setTipoPele] = useState(5);
+  const [aoTato, setAoTato] = useState(5);
+  const [sensibilidadePele, setSensibilidadePele] = useState(5);
 
   const [sensibilidadePeleObs, setSensibilidadePeleObs] = useState('');
 
@@ -361,7 +361,7 @@ const CadFicha: React.FC = props => {
   const [escoriacoes, setEscoriacoes] = useState('N');
   const [comedoesAbertos, setComedoesAbertos] = useState('N');
   const [hematomas, setHematomas] = useState('N');
-  const [fotoenvelhecimento, setFotoenvelhecimento] = useState(1);
+  const [fotoenvelhecimento, setFotoenvelhecimento] = useState(5);
 
   const [verrugasFrontal, setVerrugasFrontal] = useState('');
   const [verrugasGlabela, setVerrugasGlabela] = useState('');
@@ -380,7 +380,7 @@ const CadFicha: React.FC = props => {
   const [comedoesFechadosAcne, setComedoesFechadosAcne] = useState('N');
   const [papulas, setPapulas] = useState('N');
 
-  const [grauAcne, setGrauAcne] = useState(1);
+  const [grauAcne, setGrauAcne] = useState(5);
 
   // const [escoriacoesAcne, setEscoriacoesAcne] = useState('N');
   const [juvenilVulgar, setJuvenilVulgar] = useState('N');
@@ -394,7 +394,6 @@ const CadFicha: React.FC = props => {
   const [imagemRosto, setImagemRosto] = useState('');
   const [imagemRostoText, setImagemRostoText] = useState('');
 
-  const ativo = 'S';
   const [cliente, setCliente] = useState(0);
 
   // #region  date picker Ultima Consulta
@@ -1619,6 +1618,7 @@ const CadFicha: React.FC = props => {
               onChangeText={setAguaCopos}
               name="copos"
               placeholder="copos/dia"
+              keyboardType="numeric"
             />
             <InputFicha
               value={etilismo}
@@ -1649,6 +1649,7 @@ const CadFicha: React.FC = props => {
               onChangeText={setCigarrosDia}
               name="fumante_quantidade"
               placeholder="Quantos/dia"
+              keyboardType="numeric"
             />
             <InputFicha
               value={cigarrosInicio}
@@ -1668,16 +1669,16 @@ const CadFicha: React.FC = props => {
               <RadioLabel>Regular</RadioLabel>
               <RadioButton
                 value="Regular"
-                status={funcaoIntestinal === 1 ? 'checked' : 'unchecked'}
-                onPress={() => setFuncaoIntestinal(1)}
+                status={funcaoIntestinal === 5 ? 'checked' : 'unchecked'}
+                onPress={() => setFuncaoIntestinal(5)}
               />
             </RadioView>
             <RadioView>
               <RadioLabel>Ruim</RadioLabel>
               <RadioButton
                 value="Ruim"
-                status={funcaoIntestinal === 2 ? 'checked' : 'unchecked'}
-                onPress={() => setFuncaoIntestinal(2)}
+                status={funcaoIntestinal === 15 ? 'checked' : 'unchecked'}
+                onPress={() => setFuncaoIntestinal(15)}
               />
             </RadioView>
             <InputFicha
@@ -1829,7 +1830,7 @@ const CadFicha: React.FC = props => {
             />
             <InputFicha
               value={usoCosmeticosSensibilidade}
-              onChangeText={setAlimentacao}
+              onChangeText={setusoCosmeticosSensibilidade}
               name="sensibilidade_cosmeticos"
               placeholder="Já apresentou sensibilidade a cosméticos?"
             />
@@ -1849,8 +1850,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="I"
-                status={fitzpatrick === 1 ? 'checked' : 'unchecked'}
-                onPress={() => setFitzpatrick(1)}
+                status={fitzpatrick === 5 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(5)}
               />
             </RadioView>
 
@@ -1860,8 +1861,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="II"
-                status={fitzpatrick === 2 ? 'checked' : 'unchecked'}
-                onPress={() => setFitzpatrick(2)}
+                status={fitzpatrick === 15 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(15)}
               />
             </RadioView>
             <RadioView>
@@ -1871,8 +1872,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="III"
-                status={fitzpatrick === 3 ? 'checked' : 'unchecked'}
-                onPress={() => setFitzpatrick(3)}
+                status={fitzpatrick === 25 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(25)}
               />
             </RadioView>
             <RadioView>
@@ -1882,8 +1883,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="IV"
-                status={fitzpatrick === 4 ? 'checked' : 'unchecked'}
-                onPress={() => setFitzpatrick(4)}
+                status={fitzpatrick === 35 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(35)}
               />
             </RadioView>
             <RadioView>
@@ -1892,8 +1893,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="V"
-                status={fitzpatrick === 5 ? 'checked' : 'unchecked'}
-                onPress={() => setFitzpatrick(5)}
+                status={fitzpatrick === 45 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(45)}
               />
             </RadioView>
             <RadioView>
@@ -1902,8 +1903,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="VI"
-                status={fitzpatrick === 6 ? 'checked' : 'unchecked'}
-                onPress={() => setFitzpatrick(6)}
+                status={fitzpatrick === 55 ? 'checked' : 'unchecked'}
+                onPress={() => setFitzpatrick(55)}
               />
             </RadioView>
           </>
@@ -2396,8 +2397,8 @@ const CadFicha: React.FC = props => {
               <RadioLabel>Tipo I - sem rugas (20 - 30 anos)</RadioLabel>
               <RadioButton
                 value="I"
-                status={fotoenvelhecimento === 1 ? 'checked' : 'unchecked'}
-                onPress={() => setFotoenvelhecimento(1)}
+                status={fotoenvelhecimento === 5 ? 'checked' : 'unchecked'}
+                onPress={() => setFotoenvelhecimento(5)}
               />
             </RadioView>
             <RadioView>
@@ -2406,8 +2407,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="II"
-                status={fotoenvelhecimento === 2 ? 'checked' : 'unchecked'}
-                onPress={() => setFotoenvelhecimento(2)}
+                status={fotoenvelhecimento === 15 ? 'checked' : 'unchecked'}
+                onPress={() => setFotoenvelhecimento(15)}
               />
             </RadioView>
             <RadioView>
@@ -2416,8 +2417,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="III"
-                status={fotoenvelhecimento === 3 ? 'checked' : 'unchecked'}
-                onPress={() => setFotoenvelhecimento(3)}
+                status={fotoenvelhecimento === 25 ? 'checked' : 'unchecked'}
+                onPress={() => setFotoenvelhecimento(25)}
               />
             </RadioView>
             <RadioView>
@@ -2427,8 +2428,8 @@ const CadFicha: React.FC = props => {
               </RadioLabel>
               <RadioButton
                 value="IV"
-                status={fotoenvelhecimento === 4 ? 'checked' : 'unchecked'}
-                onPress={() => setFotoenvelhecimento(4)}
+                status={fotoenvelhecimento === 35 ? 'checked' : 'unchecked'}
+                onPress={() => setFotoenvelhecimento(35)}
               />
             </RadioView>
           </>
@@ -2707,288 +2708,270 @@ const CadFicha: React.FC = props => {
             <InputFicha
               value={imagemRostoText}
               onChangeText={setImagemRostoText}
-              name="outas_consideracoes"
-              placeholder="Outras considerações"
+              name="rosto_text"
+              placeholder="Descrição rosto"
             />
           </>
           {/* AQUIIIIIIIIIIIIIIIIIIIIII */}
           <Button
-            onPress={() => {
+            onPress={async () => {
               const formData = new FormData();
-              if (cliente === 0) {
-                // erro sem cliente
-              } else {
-                // const ficha: CadastroFicha = {
-                formData.append('queixaPrincipal', queixaPrincipal);
-                formData.append(
-                  'ginecologistaUltimaConsulta',
-                  ultimaConsulta.toISOString().slice(0, 10),
-                );
-                formData.append('cicloMenstrualNormal', cicloMenstrualNormal);
-                formData.append(
-                  'alteracoesCicloMenstrual',
-                  alteracoesCicloMenstrual,
-                );
-                formData.append(
-                  'primeiraMenstruacao',
-                  primeiraMenstruacao.toISOString().slice(0, 10),
-                );
-                formData.append(
-                  'ultimaMenstruacao',
-                  ultimaMenstruacao.toISOString().slice(0, 10),
-                );
-                formData.append('sop', sop);
-                formData.append('climaterio', climaterio);
-                formData.append('menopausa', menopausa);
-                formData.append('reposicaoHormonal', reposicaoHormonal);
-                formData.append('gestante', gestante);
-                formData.append('mesesGestacao', mesesGestacao);
-                formData.append('quantidadeGravidez', nroGravidez);
-                formData.append('quantidadeFilhos', nroFilhos);
-                formData.append('idadesFilhos', idadeFilhos);
-                formData.append('seiosNormais', seios);
-                formData.append('seiosAlteracoes', seiosAlteracoes);
-                formData.append('contraceptivosHormonais', contraceptivos);
-                formData.append(
-                  'contraceptivosHormonaisTempo',
-                  contraceptivosTempo,
-                );
-                formData.append('hirsutismo', hirsutismo);
-                formData.append('hirsutismoRepentino', hirsutismoRepentino);
-                formData.append('hirsutismoIdade', hirsutismoIdade);
-                formData.append('diabetes', diabetes);
-                formData.append('tireoide', tireoide);
-                formData.append('marcaPasso', marcaPasso);
-                formData.append('cardiacoObservacoes', cardiacoObservacoes);
-                formData.append('hipotensao', hipotensao);
-                formData.append('hipertensao', hipertensao);
-                formData.append('alergias', alergias);
-                formData.append(
-                  'tratamentoDermatologico',
-                  tratamentoDermatologico,
-                );
-                formData.append(
-                  'tratamentoDermatologicoJustificativa',
-                  tratamentoDermatologicoJustificativa,
-                );
-                formData.append(
-                  'tratamentoDermatologicoEmUso',
-                  tratamentoDermatologicoEmUso,
-                );
-                formData.append(
-                  'tratamentoDermatologicoEmUsoTempo',
-                  tratamentoDermatologicoTempo,
-                );
-                formData.append(
-                  'tratamentoDermatologicoAnterior',
-                  tratamentoAnterior,
-                );
-                formData.append(
-                  'tratamentoDermatologicoAnteriorJustificativa',
-                  tratamentoAnteriorJustivicativa,
-                );
-                formData.append(
-                  'tratamentoDermatologicoAnteriorUsado',
-                  tratamentoAnteriorUsado,
-                );
-                formData.append(
-                  'tratamentoDermatologicoAnteriorTempo',
-                  tratamentoAnteriorTempo,
-                );
-                formData.append('ansiedade', ansiedade);
-                formData.append('impaciencia', impaciencia);
-                formData.append('depressao', depressao);
-                formData.append('choqueEmocional', choqueEmocional);
-                formData.append('alergias', alergias);
-                formData.append('usaAntidepressivos', antidepressivo);
-                formData.append('antidepressivos', antidepressivos);
-                formData.append('sonoId', sono);
-                formData.append('usaRemediosParaDormir', remedioDormir);
-                formData.append('sensibilidadeADorId', sensibilidadeDor);
-                formData.append('estresseId', estresse);
-                formData.append('checkupsMedicosRegularmente', checkups);
-                formData.append('enfermidadesAtuais', enfermidadesAtuais);
-                formData.append(
-                  'enfermidadesAnteriores',
-                  enfermidadesAnteriores,
-                );
-                formData.append('medicamentosDores', dores);
-                formData.append('medicamentosEpilepsia', epilepsia);
-                formData.append(
-                  'medicamentosAntecedentesOncologicos',
-                  antecedentesOncologicos,
-                );
-                formData.append('medicamentosRetencaoHidrica', retencaoHidrica);
-                formData.append('medicamentosRosacea', rosacea);
-                formData.append('medicamentosLentesDeContato', lentesDeContato);
-                formData.append('enfermidadesAtuais', enfermidadesAtuais);
-                formData.append('medicamentosTonturas', tonturas);
-                formData.append('medicamentosProblemasRenais', problemasRenais);
-                formData.append('medicamentosLupus', lupus);
-                formData.append('medicamentosQueloides', queloides);
-                formData.append(
-                  'medicamentosImplanteDentario',
-                  implanteDentario,
-                );
-                formData.append('medicamentosFaltaDeAr', faltaDeAr);
-                formData.append(
-                  'medicamentosUsoDeCorticoides',
-                  usoDeCorticoides,
-                );
-                formData.append('medicamentosPsoriase', psoriase);
-                formData.append(
-                  'medicamentosDermatiteSeborreica',
-                  dermatiteSeborreica,
-                );
-                formData.append(
-                  'medicamentosPlacasMetalicasFace',
-                  placasMetalicasNaFace,
-                );
-                formData.append(
-                  'frequenciaAtividadesFisicasId',
-                  atividadesFisicas,
-                );
-                formData.append('atividadesFisicas', quaisAtividades);
-                formData.append('alimentacao', alimentacao);
-                formData.append('aguaQuantidade', aguaQuantidade);
-                formData.append('aguaCopos', parseInt(aguaCopos, 10));
-                formData.append('etilismo', etilismo);
-                formData.append('fumante', fumante);
-                formData.append('cigarrosDia', cigarrosDia);
-                formData.append('fumanteInicio', cigarrosInicio);
-                formData.append('fumanteFim', cigarrosFim);
-                formData.append('funcaoIntestinalId', funcaoIntestinal);
-                formData.append('funcaoIntestinalObs', funcaoIntestinalObs);
-                formData.append('informacoesComplementares', infoComplementar);
-                formData.append(
-                  'tratamentosEsteticosAnteriores',
-                  tratamentosAnteriores,
-                );
-                formData.append('cirurgiaPlasticaFace', cirurgiaPlasticaFace);
-                formData.append(
-                  'cirurgiaPlasticaFaceTempo',
-                  cirurgiaPlasticaFaceTempo,
-                );
-                formData.append('usoDeCosmeticosLimpeza', limpeza);
-                formData.append('usoDeCosmeticosEsfoliacao', esfoliacao);
-                formData.append('usoDeCosmeticosTonificacao', tonioficacao);
-                formData.append('usoDeCosmeticosAcidos', acidos);
-                formData.append('usoDeCosmeticosHidratacao', hidratacao);
-                formData.append(
-                  'usoDeCosmeticosTratamentosEspecificos',
-                  tratamentosEspecificos,
-                );
 
-                formData.append('usoDeCosmeticosFotoprotecao', fotoprotecao);
-                formData.append('exposicaoSolarId', exposicaoSolar);
-                formData.append('usoDeCosmeticosMaquiagem', usoCosmeticos);
-                formData.append(
-                  'cosmeticosSensibilidade',
-                  usoCosmeticosSensibilidade,
-                );
-                formData.append('fototipoId', fitzpatrick);
-                formData.append('etniaId', etnia);
-                formData.append('tipoPeleId', tipoPele);
-                formData.append('peleAoTatoId', aoTato);
+              // const ficha: CadastroFicha = {
+              formData.append('queixaPrincipal', queixaPrincipal);
+              formData.append(
+                'ginecologistaUltimaConsulta',
+                ultimaConsulta.toISOString().slice(0, 10),
+              );
+              formData.append('cicloMenstrualNormal', cicloMenstrualNormal);
+              formData.append(
+                'alteracoesCicloMenstrual',
+                alteracoesCicloMenstrual,
+              );
+              formData.append(
+                'primeiraMenstruacao',
+                primeiraMenstruacao.toISOString().slice(0, 10),
+              );
+              formData.append(
+                'ultimaMenstruacao',
+                ultimaMenstruacao.toISOString().slice(0, 10),
+              );
+              formData.append('sop', sop);
+              formData.append('climaterio', climaterio);
+              formData.append('menopausa', menopausa);
+              formData.append('reposicaoHormonal', reposicaoHormonal);
+              formData.append('gestante', gestante);
+              formData.append('mesesGestacao', mesesGestacao);
+              formData.append('quantidadeGravidez', nroGravidez);
+              formData.append('quantidadeFilhos', nroFilhos);
+              formData.append('idadesFilhos', idadeFilhos);
+              formData.append('seiosNormais', seios);
+              formData.append('seiosAlteracoes', seiosAlteracoes);
+              formData.append('contraceptivosHormonais', contraceptivos);
+              formData.append(
+                'contraceptivosHormonaisTempo',
+                contraceptivosTempo,
+              );
+              formData.append('hirsutismo', hirsutismo);
+              formData.append('hirsutismoRepentino', hirsutismoRepentino);
+              formData.append('hirsutismoIdade', hirsutismoIdade);
+              formData.append('diabetes', diabetes);
+              formData.append('tireoide', tireoide);
+              formData.append('marcaPasso', marcaPasso);
+              formData.append('cardiacoObservacoes', cardiacoObservacoes);
+              formData.append('hipotensao', hipotensao);
+              formData.append('hipertensao', hipertensao);
+              formData.append('alergias', alergias);
+              formData.append(
+                'tratamentoDermatologico',
+                tratamentoDermatologico,
+              );
+              formData.append(
+                'tratamentoDermatologicoJustificativa',
+                tratamentoDermatologicoJustificativa,
+              );
+              formData.append(
+                'tratamentoDermatologicoEmUso',
+                tratamentoDermatologicoEmUso,
+              );
+              formData.append(
+                'tratamentoDermatologicoEmUsoTempo',
+                tratamentoDermatologicoTempo,
+              );
+              formData.append(
+                'tratamentoDermatologicoAnterior',
+                tratamentoAnterior,
+              );
+              formData.append(
+                'tratamentoDermatologicoAnteriorJustificativa',
+                tratamentoAnteriorJustivicativa,
+              );
+              formData.append(
+                'tratamentoDermatologicoAnteriorUsado',
+                tratamentoAnteriorUsado,
+              );
+              formData.append(
+                'tratamentoDermatologicoAnteriorTempo',
+                tratamentoAnteriorTempo,
+              );
+              formData.append('ansiedade', ansiedade);
+              formData.append('impaciencia', impaciencia);
+              formData.append('depressao', depressao);
+              formData.append('choqueEmocional', choqueEmocional);
+              formData.append('usaAntidepressivos', antidepressivo);
+              formData.append('antidepressivos', antidepressivos);
+              formData.append('sonoId', sono);
+              formData.append('usaRemediosParaDormir', remedioDormir);
+              formData.append('sensibilidadeADorId', sensibilidadeDor);
+              formData.append('estresseId', estresse);
+              formData.append('checkupsMedicosRegularmente', checkups);
+              formData.append('enfermidadesAtuais', enfermidadesAtuais);
+              formData.append('enfermidadesAnteriores', enfermidadesAnteriores);
+              formData.append('medicamentosDores', dores);
+              formData.append('medicamentosEpilepsia', epilepsia);
+              formData.append(
+                'medicamentosAntecedentesOncologicos',
+                antecedentesOncologicos,
+              );
 
-                formData.append('peleSensibilidadeId', sensibilidadePele);
-                formData.append(
-                  'peleSensibilidadeObservacao',
-                  sensibilidadePeleObs,
-                );
-                formData.append('acromias', acromias);
-                formData.append('hipocromias', hipocromias);
-                formData.append('efelides', efelides);
-                formData.append('melasmas', melasmas);
-                formData.append('lentigos', lentigos);
-                formData.append('melanose', melanose);
-                formData.append('hipercromiaPosTraumatica', posTraumatica);
-                formData.append('hipercromiaPosInflamatoria', posInflamatoria);
-                formData.append('xantelasmas', xantelasmas);
-                formData.append('hiperplasiaSebacea', hiperplasiaSebacea);
-                formData.append('cicatrizes', cicatrizes);
-                formData.append('seborreia', seborreia);
-                formData.append('flacidezMuscular', flacidesMuscular);
-                formData.append('comedoesCapilares', comedoesCapilares);
-                formData.append('eritemas', eritemas);
-                formData.append('verrugas', verrugas);
-                formData.append('queratosePilarFolicular', queratose);
-                formData.append('asfitica', asfitica);
+              formData.append('medicamentosRetencaoHidrica', retencaoHidrica);
+              formData.append('medicamentosRosacea', rosacea);
+              formData.append('medicamentosLentesDeContato', lentesDeContato);
+              formData.append('medicamentosTonturas', tonturas);
+              formData.append('medicamentosProblemasRenais', problemasRenais);
+              formData.append('medicamentosLupus', lupus);
+              formData.append('medicamentosQueloides', queloides);
+              formData.append('medicamentosImplanteDentario', implanteDentario);
+              formData.append('medicamentosFaltaDeAr', faltaDeAr);
+              formData.append('medicamentosUsoDeCorticoides', usoDeCorticoides);
+              formData.append('medicamentosPsoriase', psoriase);
+              formData.append(
+                'medicamentosDermatiteSeborreica',
+                dermatiteSeborreica,
+              );
+              formData.append(
+                'medicamentosPlacasMetalicasFace',
+                placasMetalicasNaFace,
+              );
+              formData.append(
+                'frequenciaAtividadesFisicasId',
+                atividadesFisicas,
+              );
+              formData.append('atividadesFisicas', quaisAtividades);
+              formData.append('alimentacao', alimentacao);
+              formData.append('aguaQuantidade', aguaQuantidade);
+              formData.append('aguaCopos', parseInt(aguaCopos, 10));
+              formData.append('etilismo', etilismo);
+              formData.append('fumante', fumante);
+              formData.append('cigarrosDia', parseInt(cigarrosDia, 10));
+              formData.append('fumanteInicio', cigarrosInicio);
+              formData.append('fumanteFim', cigarrosFim);
+              formData.append('funcaoIntestinalId', funcaoIntestinal);
+              formData.append('funcaoIntestinalObs', funcaoIntestinalObs);
+              formData.append('informacoesComplementares', infoComplementar);
+              formData.append(
+                'tratamentosEsteticosAnteriores',
+                tratamentosAnteriores,
+              );
+              formData.append('cirurgiaPlasticaFace', cirurgiaPlasticaFace);
+              formData.append(
+                'cirurgiaPlasticaFaceTempo',
+                cirurgiaPlasticaFaceTempo,
+              );
+              formData.append('usoDeCosmeticosLimpeza', limpeza);
+              formData.append('usoDeCosmeticosEsfoliacao', esfoliacao);
+              formData.append('usoDeCosmeticosTonificacao', tonioficacao);
+              formData.append('usoDeCosmeticosAcidos', acidos);
+              formData.append('usoDeCosmeticosHidratacao', hidratacao);
+              formData.append(
+                'usoDeCosmeticosTratamentosEspecificos',
+                tratamentosEspecificos,
+              );
 
-                formData.append('ostiosDilatados', ostiosDilatados);
-                formData.append('flacidezTissular', flacidezTissular);
-                formData.append('microcomedoes', micromedoes);
-                formData.append('edemas', edemas);
-                formData.append('nevos', nevos);
-                formData.append('dermografismo', dermografismo);
-                formData.append('talangiectasias', talangiectasias);
-                formData.append('miliuns', miliuns);
-                formData.append('escoriacoes', escoriacoes);
-                formData.append('comedoesAbertos', comedoesAbertos);
-                formData.append('hematomas', hematomas);
-                formData.append('fotoenvelhecimentoId', fotoenvelhecimento);
-                formData.append('verrugasFrontal', verrugasFrontal);
-                formData.append('verrugasGlabela', verrugasGlabela);
-                formData.append(
-                  'verrugasOrbicularOlhos',
-                  verrugasOrbicularOlhos,
-                );
-                formData.append(
-                  'verrugasOrbicularLabios',
-                  verrugasOrbicularLabios,
-                );
-                formData.append('verrugasLateralFace', verrugasLateralFace);
-                formData.append('verrugasSulcoNasogeniano', verrugasSulco);
-                formData.append('verrugasPescoco', verrugasPescoco);
-                formData.append('verrugasColo', verrugasColo);
-                formData.append('pustulas', pustulas);
-                formData.append('nodulos', nodulos);
-                formData.append('comedoesFechados', comedoesFechadosAcne);
-                formData.append('papulas', papulas);
-                formData.append('acneGrauId', grauAcne);
+              formData.append('usoDeCosmeticosFotoprotecao', fotoprotecao);
+              formData.append('exposicaoSolarId', exposicaoSolar);
+              formData.append('usoDeCosmeticosMaquiagem', usoCosmeticos);
+              formData.append(
+                'cosmeticosSensibilidade',
+                usoCosmeticosSensibilidade,
+              );
+              formData.append('fototipoId', fitzpatrick);
+              formData.append('etniaId', etnia);
+              formData.append('tipoPeleId', tipoPele);
+              formData.append('peleAoTatoId', aoTato);
 
-                formData.append('acneJuvenilVulgar', juvenilVulgar);
-                formData.append('acneTardia', tardia);
-                formData.append('acneFamilia', acneFamilia);
-                formData.append('acneInicio', acneInicio);
-                formData.append('acneEvolucao', acneEvolucao);
-                formData.append('outrasConsideracoes', outrasConsideracoes);
-                console.log(imagemRosto);
-                formData.append('assinaturaCliente', {
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore: Object is possibly 'undefined'.
-                  uri: imagemRosto,
-                  type: 'image/jpg',
-                  name: 'assinatura.jpg',
+              formData.append('peleSensibilidadeId', sensibilidadePele);
+              formData.append(
+                'peleSensibilidadeObservacao',
+                sensibilidadePeleObs,
+              );
+              formData.append('acromias', acromias);
+              formData.append('hipocromias', hipocromias);
+              formData.append('efelides', efelides);
+              formData.append('melasmas', melasmas);
+              formData.append('lentigos', lentigos);
+              formData.append('melanose', melanose);
+              formData.append('hipercromiaPosTraumatica', posTraumatica);
+              formData.append('hipercromiaPosInflamatoria', posInflamatoria);
+              formData.append('xantelasmas', xantelasmas);
+              formData.append('hiperplasiaSebacea', hiperplasiaSebacea);
+              formData.append('cicatrizes', cicatrizes);
+              formData.append('seborreia', seborreia);
+              formData.append('flacidezMuscular', flacidesMuscular);
+              formData.append('comedoesCapilares', comedoesCapilares);
+              formData.append('eritemas', eritemas);
+              formData.append('verrugas', verrugas);
+              formData.append('queratosePilarFolicular', queratose);
+              formData.append('asfitica', asfitica);
+
+              formData.append('ostiosDilatados', ostiosDilatados);
+              formData.append('flacidezTissular', flacidezTissular);
+              formData.append('microcomedoes', micromedoes);
+              formData.append('edemas', edemas);
+              formData.append('nevos', nevos);
+              formData.append('dermografismo', dermografismo);
+              formData.append('talangiectasias', talangiectasias);
+              formData.append('miliuns', miliuns);
+              formData.append('escoriacoes', escoriacoes);
+              formData.append('comedoesAbertos', comedoesAbertos);
+              formData.append('hematomas', hematomas);
+              formData.append('fotoenvelhecimentoId', fotoenvelhecimento);
+              formData.append('verrugasFrontal', verrugasFrontal);
+              formData.append('verrugasGlabela', verrugasGlabela);
+              formData.append('verrugasOrbicularOlhos', verrugasOrbicularOlhos);
+              formData.append(
+                'verrugasOrbicularLabios',
+                verrugasOrbicularLabios,
+              );
+              formData.append('verrugasLateralFace', verrugasLateralFace);
+              formData.append('verrugasSulcoNasogeniano', verrugasSulco);
+              formData.append('verrugasPescoco', verrugasPescoco);
+              formData.append('verrugasColo', verrugasColo);
+              formData.append('pustulas', pustulas);
+              formData.append('nodulos', nodulos);
+              formData.append('comedoesFechados', comedoesFechadosAcne);
+              formData.append('papulas', papulas);
+              formData.append('acneGrauId', grauAcne);
+
+              formData.append('acneJuvenilVulgar', juvenilVulgar);
+              formData.append('acneTardia', tardia);
+              formData.append('acneFamilia', acneFamilia);
+              formData.append('acneInicio', acneInicio);
+              formData.append('acneEvolucao', acneEvolucao);
+              formData.append('outrasConsideracoes', outrasConsideracoes);
+              formData.append('assinaturaCliente', {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore: Object is possibly 'undefined'.
+                uri: imagemRosto,
+                type: 'image/jpg',
+                name: 'assinatura.jpg',
+              });
+              formData.append('imagemRosto', {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore: Object is possibly 'undefined'.
+                uri: imagemRosto,
+                type: 'image/jpg',
+                name: 'rosto.jpg',
+              });
+              formData.append('descricaoRosto', imagemRostoText);
+              formData.append('ativo', 'S');
+              formData.append('clienteId', cliente);
+
+              // };
+              console.log(formData);
+
+              try {
+                const resp = await api.post('record', formData, {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                  },
                 });
-                formData.append('imagemRosto', {
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore: Object is possibly 'undefined'.
-                  uri: imagemRosto,
-                  type: 'image/jpg',
-                  name: 'rosto.jpg',
-                });
-                formData.append('ativo', 'S');
-                formData.append('clienteId', cliente);
-                formData.append('descricaoRosto', imagemRostoText);
 
-                // };
-
-                api
-                  .post('record', formData, {
-                    headers: {
-                      Authorization: `Bearer ${token}`,
-                      'Content-Type': 'multipart/form-data',
-                    },
-                  })
-                  .then(resp => {
-                    console.log(resp.data);
-                    props.navigation.navigate('ListFichas', { token });
-                  })
-                  .catch(e => {
-                    console.log(e);
-                    props.navigation.navigate('ListFichas', { token });
-                  });
+                props.navigation.navigate('ListFichas', { token });
+              } catch (err) {
+                console.error(err);
+                props.navigation.navigate('ListFichas', { token });
               }
             }}
           >
